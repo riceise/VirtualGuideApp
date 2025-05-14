@@ -1,0 +1,286 @@
+@page "/register"
+@rendermode InteractiveServer
+@inject IHttpClientFactory HttpClientFactory
+@inject NavigationManager NavigationManager
+@implements IDisposable
+@using Guide.Data.Models.Users
+@using System.Text.Json
+@using System.Net.Http.Json
+
+<PageTitle>Регистрация</PageTitle>
+
+<style>
+    .register-form {
+        max-width: 400px;
+        margin: 2rem auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .register-form h3 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        font-weight: 500;
+    }
+    .register-form .form-group { margin-bottom: 1rem; }
+    .register-form label {
+        display: block;
+        margin-bottom: 0.3rem;
+        font-weight: 500;
+        color: #555;
+        text-align: left;
+    }
+    .register-form input[type="text"],
+    .register-form input[type="email"],
+    .register-form input[type="password"],
+    .register-form input[type="tel"],
+    .register-form input[type="url"] {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+        box-sizing: border-box;
+    }
+    .register-form .form-check-input {
+        width: auto;
+        margin-right: 0.5rem;
+        vertical-align: middle;
+    }
+    .register-form button {
+        width: 100%;
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s, opacity 0.3s;
+        margin-top: 1rem;
+    }
+    .register-form button:hover:not(:disabled) { background-color: #0056b3; }
+    .register-form button:disabled {
+        background-color: #6c757d;
+        cursor: not-allowed;
+        opacity: 0.65;
+    }
+    .validation-message {
+        color: #d9534f;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+    .api-error-list {
+        list-style-type: none;
+        padding: 10px;
+        margin-top: 15px;
+        color: #d9534f;
+        font-size: 0.9rem;
+        text-align: left;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+    }
+    .api-error-list li { margin-bottom: 5px; }
+    .form-check-label {
+        margin-bottom: 0;
+        vertical-align: middle;
+    }
+    .register-form > div:last-child { margin-top: 0; }
+</style>
+
+<div class="register-form">
+    <h3>Регистрация</h3>
+    <EditForm Model="@registerModel" OnValidSubmit="HandleRegistration">
+    <DataAnnotationsValidator/>
+        <div class="form-group">
+            <label for="username">Имя пользователя</label>
+            <InputText id="username" class="form-control" @bind-Value="registerModel.UserName"/>
+            <ValidationMessage For="@(() => registerModel.UserName)"/>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Электронная почта</label>
+            <InputText id="email" type="email" class="form-control" @bind-Value="registerModel.Email"/>
+            <ValidationMessage For="@(() => registerModel.Email)"/>
+        </div>
+
+        <div class="form-group">
+            <label for="fullName">Полное имя (ФИО)</label>
+            <InputText id="fullName" class="form-control" @bind-Value="registerModel.FullName"/>
+            <ValidationMessage For="@(() => registerModel.FullName)"/>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <InputText id="password" type="password" class="form-control" @bind-Value="registerModel.Password"/>
+            <ValidationMessage For="@(() => registerModel.Password)"/>
+        </div>
+
+        <div class="form-group">
+            <label for="confirmPassword">Подтвердите пароль</label>
+            <InputText id="confirmPassword" type="password" class="form-control" @bind-Value="registerModel.ConfirmPassword"/>
+            <ValidationMessage For="@(() => registerModel.ConfirmPassword)"/>
+        </div>
+
+        <div class="form-group form-check">
+            <InputCheckbox id="isExcursionist" class="form-check-input" @bind-Value="registerModel.IsExcursionist"/>
+            <label class="form-check-label" for="isExcursionist">Я регистрируюсь как экскурсовод</label>
+        </div>
+
+        @if (apiErrorMessages.Any())
+        {
+            <ul class="api-error-list">
+                @foreach (var error in apiErrorMessages)
+                {
+                    <li>@error</li>
+                }
+            </ul>
+        }
+
+        <button type="submit" class="btn btn-primary" disabled="@isSubmitting">
+            @if (isSubmitting)
+            {
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span> Отправка...</span>
+            }
+            else
+            {
+                <span>Зарегистрироваться</span>
+            }
+        </button>
+    </EditForm>
+</div>
+
+@code
+{
+    private RegisterModel registerModel = new RegisterModel();
+    private List<string> apiErrorMessages = new List<string>();
+    private bool isSubmitting = false;
+    private HttpClient? httpClient;
+
+    protected override void OnInitialized()
+    {
+        httpClient = HttpClientFactory.CreateClient("BackendAPI");
+    }
+
+    private async Task HandleRegistration()
+    {
+        apiErrorMessages.Clear();
+        isSubmitting = true;
+
+        if (httpClient == null)
+        {
+            apiErrorMessages.Add("Ошибка инициализации HTTP клиента.");
+            isSubmitting = false;
+            return;
+        }
+
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync("api/Auth/register", registerModel);
+
+            if (response.IsSuccessStatusCode)
+            {
+                NavigationManager.NavigateTo("/login", forceLoad: false);
+            }
+            else
+            {
+                string rawError = string.Empty;
+                try
+                {
+                    rawError = await response.Content.ReadAsStringAsync();
+                    var errorResponse = JsonSerializer.Deserialize<ErrorResponse>(rawError, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                    if (errorResponse?.Errors != null && errorResponse.Errors.Any())
+                    {
+                        apiErrorMessages = errorResponse.Errors.ToList();
+                    }
+                    else if (!string.IsNullOrWhiteSpace(errorResponse?.Message))
+                    {
+                        apiErrorMessages.Add(errorResponse.Message);
+                    }
+                    else if (!string.IsNullOrWhiteSpace(rawError) && response.Content.Headers.ContentType?.MediaType == "application/json")
+                    {
+                        try
+                        {
+                            var simpleError = JsonSerializer.Deserialize<JsonElement>(rawError);
+                            if (simpleError.ValueKind == JsonValueKind.String)
+                            {
+                                apiErrorMessages.Add(simpleError.GetString()!);
+                            }
+                            else if (simpleError.TryGetProperty("title", out var titleElement) && titleElement.ValueKind == JsonValueKind.String)
+                            {
+                                apiErrorMessages.Add(titleElement.GetString()!);
+                            }
+                            else
+                            {
+                                apiErrorMessages.Add($"Произошла ошибка: {response.ReasonPhrase} (Код: {response.StatusCode}). Подробности в консоли.");
+                                Console.WriteLine($"Raw API Error ({response.StatusCode}): {rawError}");
+                            }
+                        }
+                        catch
+                        {
+                             apiErrorMessages.Add($"Произошла ошибка: {response.ReasonPhrase} (Код: {response.StatusCode}). Не удалось разобрать ответ.");
+                             Console.WriteLine($"Raw API Error ({response.StatusCode}): {rawError}");
+                        }
+                    }
+                    else
+                    {
+                        apiErrorMessages.Add($"Произошла ошибка во время регистрации. Пожалуйста, попробуйте еще раз. ({response.StatusCode} - {response.ReasonPhrase})");
+                        if (!string.IsNullOrWhiteSpace(rawError))
+                        {
+                            Console.WriteLine($"Raw API Error ({response.StatusCode}): {rawError}");
+                        }
+                    }
+                }
+                catch (JsonException jsonEx)
+                {
+                    apiErrorMessages.Add($"Ошибка обработки ответа сервера (неверный формат JSON). ({response.StatusCode})");
+                    Console.WriteLine($"JSON Deserialization Error: {jsonEx.Message}");
+                    if (!string.IsNullOrWhiteSpace(rawError))
+                    {
+                        Console.WriteLine($"Raw API Error ({response.StatusCode}): {rawError}");
+                    }
+                }
+                catch (Exception readEx)
+                {
+                    apiErrorMessages.Add($"Ошибка чтения ответа сервера. ({response.StatusCode})");
+                    Console.WriteLine($"Read Content Error: {readEx.Message}");
+                }
+            }
+        }
+        catch (HttpRequestException httpEx)
+        {
+            apiErrorMessages.Add($"Сетевая ошибка: {httpEx.Message}. Пожалуйста, проверьте ваше интернет-соединение и доступность сервера.");
+            Console.WriteLine($"HTTP Request Error: {httpEx}");
+        }
+        catch (Exception ex)
+        {
+            apiErrorMessages.Add($"Произошла непредвиденная ошибка: {ex.Message}");
+            Console.WriteLine($"Unhandled Exception in HandleRegistration: {ex}");
+        }
+        finally
+        {
+            isSubmitting = false;
+            StateHasChanged();
+        }
+    }
+
+    public void Dispose()
+    {
+    }
+
+    private class ErrorResponse
+    {
+        public string? Status { get; set; }
+        public string? Message { get; set; }
+        public IEnumerable<string>? Errors { get; set; }
+        public string? Title { get; set; }
+    }
+}

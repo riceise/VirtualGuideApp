@@ -12,6 +12,11 @@
       <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
       <PackageReference Include="Microsoft.Identity.Web.OWIN" Version="3.8.4" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Guide.Api\Guide.Api.csproj" />
+      <ProjectReference Include="..\Guide.Data\Guide.Data.csproj" />
+    </ItemGroup>
     
     
 

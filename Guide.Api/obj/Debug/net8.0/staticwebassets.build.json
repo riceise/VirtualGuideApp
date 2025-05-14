@@ -1,0 +1,34 @@
+{
+  "Version": 1,
+  "Hash": "gNAERyfT8SzBgbD4bzuO5IUHeKfN0Vk6kNMWaiVM7xU=",
+  "Source": "Guide.Api",
+  "BasePath": "_content/Guide.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Data\\Guide.Data.csproj",
+      "Version": 2,
+      "Source": "Guide.Data",
+      "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile"
+    },
+    {
+      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Data\\Guide.Data.csproj",
+      "Version": 2,
+      "Source": "Guide.Data",
+      "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile"
+    }
+  ],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

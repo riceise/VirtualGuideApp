@@ -1,4 +1,8 @@
-﻿@inherits LayoutComponentBase
+﻿@using Guide.Ui.Components.Services
+@using Microsoft.AspNetCore.Components.Authorization
+@inherits LayoutComponentBase
+@inject AuthenticationService AuthService
+@inject NavigationManager NavigationManager
 
 <div class="page">
     <div class="sidebar">
@@ -7,7 +11,28 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            <CascadingAuthenticationState>
+                <AuthorizeView>
+                    <Authorized>
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-link ms-2" @onclick="Logout">Выйти</button>
+                            <a href="profile"
+                               title="Перейти в профиль"
+                               class="ms-2 profile-icon-link">
+                                <img src="user.png"
+                                     alt="Профиль пользователя"
+                                     class="img-fluid profile-icon"/>
+                            </a>
+                        </div>
+                    </Authorized>
+                    <NotAuthorized>
+                        <div class="d-flex align-items-center">
+                            <a href="Login">Войти</a>
+                            <a href="Register" class="ms-2">Регистрация</a>
+                        </div>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </CascadingAuthenticationState>
         </div>
 
         <article class="content px-4">
@@ -21,3 +46,19 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+<style>
+    .profile-icon {
+        height: 30px;
+        width: auto;
+        vertical-align: middle;
+    }
+</style>
+@code {
+
+    private void Logout()
+    {
+        AuthService.Logout();
+    }
+
+}

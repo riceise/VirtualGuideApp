@@ -1,0 +1,45 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Guide.Ui.bundle.scp.css",
+      "PackagePath": "staticwebassets\\Guide.Ui.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\user.png",
+      "PackagePath": "staticwebassets\\user.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Guide.Ui.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.Guide.Ui.props",
+      "PackagePath": "build\\Guide.Ui.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.Guide.Ui.props",
+      "PackagePath": "buildMultiTargeting\\Guide.Ui.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.Guide.Ui.props",
+      "PackagePath": "buildTransitive\\Guide.Ui.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

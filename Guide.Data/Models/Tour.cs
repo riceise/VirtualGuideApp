@@ -25,7 +25,6 @@ public class Tour
     [StringLength(255)]
     public string Title { get; set; } = string.Empty;
 
-    [Column(TypeName = "nvarchar(MAX)")]
     public string? Description { get; set; }
 
     [StringLength(100)]
