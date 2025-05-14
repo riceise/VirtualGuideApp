@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "3EgBpgrY0UxSZ/SQmcj0yj6f5rI51lofRijhEUnZQSM=",
+  "Hash": "R1JHRgF8luWjjhy93bB4ahfvfQu59m5GES1VBI6sXoE=",
   "Source": "Guide.Ui",
   "BasePath": "_content/Guide.Ui",
   "Mode": "Default",
@@ -152,6 +152,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.png"
+    },
+    {
+      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\js\\mapInterop.js",
+      "SourceId": "Guide.Ui",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "BasePath": "_content/Guide.Ui",
+      "RelativePath": "js/mapInterop.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\mapInterop.js"
     },
     {
       "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\user.png",

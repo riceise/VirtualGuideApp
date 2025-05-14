@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\favicon.png"
     },
     {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\js\\mapInterop.js",
+      "PackagePath": "staticwebassets\\js\\mapInterop.js"
+    },
+    {
       "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\user.png",
       "PackagePath": "staticwebassets\\user.png"
     },
