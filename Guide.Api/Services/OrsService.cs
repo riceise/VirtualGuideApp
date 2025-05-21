@@ -46,33 +46,19 @@ public class OrsService : IOrsService
         }
 
         var requestBody = new OrsRequestBody { Coordinates = coordinates };
-        var requestUrl = $"/v2/directions/{profile}/geojson"; // Используем /geojson для получения GeoJSON
-
-        // Для POST запроса с телом JSON:
-        // httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(_apiKey); // Если ключ в заголовке Authorization
-        // httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json; charset=utf-8");
-        // HttpResponseMessage response = await _httpClient.PostAsJsonAsync(requestUrl, requestBody);
-
-        // ИЛИ если API ключ в URL и это GET (для двух точек), ИЛИ POST с ключом в заголовке
-        // Для POST-запроса (как в вашем примере для нескольких точек):
+        var requestUrl = $"/v2/directions/{profile}/geojson"; 
+        
         var jsonRequestBody = JsonSerializer.Serialize(requestBody);
         var content = new StringContent(jsonRequestBody, System.Text.Encoding.UTF8, "application/json");
 
-         // Проверяем, как ORS ожидает ключ для POST - в заголовке Authorization или как параметр api_key
-         // Судя по вашему curl для POST, ключ в заголовке Authorization:
-         // -H 'Authorization: 5b3ce3597851110001cf62487e880c5951724e8cb19731b1b33be92c'
-         // Значит, _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(_apiKey); должно быть правильно.
-         // Убедимся, что BaseAddress не содержит ключ, а URL запроса - только путь.
-
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(_apiKey); // Для ORS ключ передается так
-
+        
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(_apiKey); 
 
         _logger.LogInformation("Отправка запроса на ORS: URL={Url}, Тело={Body}", _httpClient.BaseAddress + requestUrl, jsonRequestBody);
 
         try
         {
-            HttpResponseMessage response = await _httpClient.PostAsync(requestUrl, content); // POST-запрос
-            
+            HttpResponseMessage response = await _httpClient.PostAsync(requestUrl, content); 
             if (response.IsSuccessStatusCode)
             {
                 var responseData = await response.Content.ReadFromJsonAsync<OrsDirectionsResponse>();

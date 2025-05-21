@@ -154,7 +154,7 @@
         {
             isMapInitializing = true;
             await InvokeAsync(StateHasChanged);
-            await Task.Delay(100); // Ensure DOM is stable
+            await Task.Delay(100); 
             await InitializeEditorMap();
         }
     }

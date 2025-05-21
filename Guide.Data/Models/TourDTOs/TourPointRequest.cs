@@ -18,7 +18,6 @@ public class TourPointRequest
 
     public int Order { get; set; }
 
-    // Файлы изображений будут загружаться отдельно, здесь могут быть временные ID или имена файлов
     public List<string> TempImageReferences { get; set; } = new List<string>();
     
 }

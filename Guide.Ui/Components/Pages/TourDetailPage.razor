@@ -85,15 +85,15 @@ else
     private bool isLoading = true;
     private bool isLoadingError = false;
     private bool isMapReady = false;
-    private bool isMapInitializing = false; // Изначально false. Будет true только во время активной попытки инициализации.
+    private bool isMapInitializing = false; 
     private string errorMessage = string.Empty;
     private string apiBaseUrl;
     private HttpClient httpClient;
     private DotNetObjectReference<TourDetailPage> dotNetObjectReference;
-    private string mapContainerId = "tour-detail-map"; // Уникальный ID
+    private string mapContainerId = "tour-detail-map"; 
     private CancellationTokenSource mapInitCts;
 
-    private bool _mapInitializationAttempted = false; // Флаг, что попытка инициализации была
+    private bool _mapInitializationAttempted = false; 
 
     protected override async Task OnInitializedAsync()
     {
@@ -102,7 +102,7 @@ else
         Logger.LogInformation("TourDetailPage Initialized for TourId: {TourId}. API Base URL: {ApiBaseUrl}", TourId, apiBaseUrl);
 
         dotNetObjectReference = DotNetObjectReference.Create(this);
-        mapInitCts = new CancellationTokenSource(TimeSpan.FromSeconds(15)); // Увеличим тайм-аут на всякий случай
+        mapInitCts = new CancellationTokenSource(TimeSpan.FromSeconds(15)); 
 
         await LoadTourDetails();
     }
@@ -111,9 +111,8 @@ else
     {
         isLoading = true;
         isLoadingError = false;
-        isMapReady = false; // Сброс состояния карты
-        _mapInitializationAttempted = false; // Сброс флага попытки
-        // isMapInitializing НЕ устанавливаем здесь в true.
+        isMapReady = false; 
+        _mapInitializationAttempted = false; 
         errorMessage = string.Empty;
         await InvokeAsync(StateHasChanged);
 

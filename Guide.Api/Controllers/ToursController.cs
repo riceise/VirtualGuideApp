@@ -56,10 +56,10 @@ public class ToursController : ControllerBase
 
     // GET: api/Tours
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Tour>>> GetTours() // Упрощенный список туров
+    public async Task<ActionResult<IEnumerable<Tour>>> GetTours() 
     {
         return await _context.Tours
-            .Where(t => t.Status == TourStatus.Approved) // Только одобренные
+            .Where(t => t.Status == TourStatus.Approved) 
             .OrderBy(t => t.Title)
             .ToListAsync();
     }
@@ -101,20 +101,16 @@ public class ToursController : ControllerBase
 
         if (response.Stops.Count >= 2)
         {
-            // ORS ожидает координаты в формате [долгота, широта]
             var orsCoordinates = response.Stops
                 .Select(s => new List<double> { s.Longitude, s.Latitude })
                 .ToList();
 
-            // Если ORS API поддерживает запрос сразу для всех сегментов (передавая все точки):
-            var orsResponse = await _orsService.GetRouteAsync(orsCoordinates, "foot-walking"); // Или driving-car
+            var orsResponse = await _orsService.GetRouteAsync(orsCoordinates, "foot-walking");
             if (orsResponse?.Features != null && orsResponse.Features.Any())
             {
-                // Обычно ORS возвращает один Feature для всего маршрута, если переданы все точки
                 var routeFeature = orsResponse.Features.First();
                 if (routeFeature.Geometry?.Coordinates != null)
                 {
-                    // В этом случае RouteSegmentsGeometry будет содержать одну "большую" полилинию
                     response.RouteSegmentsGeometry.Add(routeFeature.Geometry.Coordinates);
                 }
 
@@ -127,20 +123,7 @@ public class ToursController : ControllerBase
             else
             {
                 _logger.LogWarning("Не удалось построить маршрут для тура {TourId} через ORS.", id);
-                // Можно попытаться построить по сегментам, если общий запрос не удался или если так надо
-                // for (int i = 0; i < response.Stops.Count - 1; i++)
-                // {
-                //     var segmentCoords = new List<List<double>>
-                //     {
-                //         new List<double> { response.Stops[i].Longitude, response.Stops[i].Latitude },
-                //         new List<double> { response.Stops[i+1].Longitude, response.Stops[i+1].Latitude }
-                //     };
-                //     var segmentOrsResponse = await _orsService.GetRouteAsync(segmentCoords, "foot-walking");
-                //     if (segmentOrsResponse?.Features != null && segmentOrsResponse.Features.Any())
-                //     {
-                //         response.RouteSegmentsGeometry.Add(segmentOrsResponse.Features.First().Geometry.Coordinates);
-                //     }
-                // }
+                
             }
         }
 
