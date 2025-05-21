@@ -1,7 +1,67 @@
 ﻿@page "/"
+@inject IHttpClientFactory HttpClientFactory
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthStateProvider
 
-<PageTitle>Home</PageTitle>
+<h3>Экскурсионные Маршруты</h3>
 
-<h1>Hello, world!</h1>
+<AuthorizeView>
+    <Authorized>
+        @if (tours == null)
+        {
+            <p>
+                <em>Загрузка списка маршрутов...</em>
+            </p>
+        }
+        else if (!tours.Any())
+        {
+            <p>Нет доступных маршрутов.</p>
+        }
+        else
+        {
+            <ul class="list-group">
+                @foreach (var tour in tours)
+                {
+                    <li class="list-group-item list-group-item-action" @onclick="() => NavigateToTour(tour.TourId)" style="cursor:pointer;">
+                        <h5>@tour.Title</h5>
+                        <p>@(tour.Description != null ? tour.Description.Substring(0, Math.Min(tour.Description.Length, 100)) + "..." : "Без описания")</p>
+                    </li>
+                }
+            </ul>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <p>Пожалуйста, <a href="/login">войдите</a> или <a href="/register">зарегистрируйтесь</a>, чтобы просмотреть экскурсионные маршруты.</p>
+    </NotAuthorized>
+</AuthorizeView>
 
-Welcome to your new app.
+@code {
+    private List<Guide.Data.Models.Tour> tours;
+    private HttpClient Http => HttpClientFactory.CreateClient("BackendAPI");
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity?.IsAuthenticated != true)
+        {
+            return;
+        }
+
+        try
+        {
+            tours = await Http.GetFromJsonAsync<List<Guide.Data.Models.Tour>>("api/Tours");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка загрузки туров: {ex.Message}");
+        }
+    }
+
+    private void NavigateToTour(Guid tourId)
+    {
+        Navigation.NavigateTo($"/tours/{tourId}");
+    }
+
+}

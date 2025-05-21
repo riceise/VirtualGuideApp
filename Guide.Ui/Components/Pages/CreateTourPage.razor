@@ -1,0 +1,427 @@
+﻿@page "/create-tour"
+@attribute [Authorize(Roles = "Excursionist,Administrator")]
+
+@inject IJSRuntime JSRuntime
+@inject IHttpClientFactory HttpClientFactory
+@inject NavigationManager Navigation
+@inject ILogger<CreateTourPage> Logger
+
+<h3>Создать новый маршрут</h3>
+
+<EditForm Model="tourRequestModel" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator/>
+    <ValidationSummary class="text-danger"/>
+
+    <div class="mb-3">
+        <label for="title" class="form-label">Название маршрута:</label>
+        <InputText id="title" class="form-control" @bind-Value="tourRequestModel.Title"/>
+        <ValidationMessage For="@(() => tourRequestModel.Title)"/>
+    </div>
+
+    <div class="mb-3">
+        <label for="description" class="form-label">Описание:</label>
+        <InputTextArea id="description" class="form-control" @bind-Value="tourRequestModel.Description" rows="3"/>
+        <ValidationMessage For="@(() => tourRequestModel.Description)"/>
+    </div>
+
+    <div class="mb-3">
+        <label for="theme" class="form-label">Тема:</label>
+        <InputText id="theme" class="form-control" @bind-Value="tourRequestModel.Theme"/>
+        <ValidationMessage For="@(() => tourRequestModel.Theme)"/>
+    </div>
+
+    <h4>Точки маршрута:</h4>
+    <div id="editMapContainer" style="height: 400px; width: 100%; border: 1px solid #ccc; margin-bottom: 15px; position: relative;">
+        @if (isMapInitializing)
+        {
+            <div class="d-flex justify-content-center align-items-center" style="position: absolute; top: 0; left: 0; height: 100%; width: 100%; background-color: rgba(240, 240, 240, 0.8); z-index: 1000;">
+                <p class="m-0">Инициализация карты...</p>
+            </div>
+        }
+        <div id="@mapContainerId" style="height: 100%; width: 100%;"></div>
+    </div>
+    <button type="button" class="btn btn-info mb-2" @onclick="ToggleAddPointMode" disabled="@(!isMapReady)">
+        @(isAddingPointsMode ? "Завершить добавление точек" : "Добавить точку по клику")
+    </button>
+    @if (!isMapReady && !isMapInitializing)
+    {
+        <p class="text-danger">Не удалось инициализировать карту. Пожалуйста, обновите страницу.</p>
+    }
+
+    @if (tourRequestModel.Points.Any())
+    {
+        <p>Кликните на точку в списке, чтобы отредактировать ее детали.</p>
+        <ul class="list-group mb-3">
+            @foreach (var point in tourRequestModel.Points.OrderBy(p => p.Order))
+            {
+                var pointClosure = point;
+                <li class="list-group-item @(selectedPoint == pointClosure ? "active" : "")" @onclick="() => SelectPointForEditing(pointClosure)" style="cursor:pointer;">
+                    <strong>Точка @pointClosure.Order:</strong> @(string.IsNullOrWhiteSpace(pointClosure.Name) ? $"({pointClosure.Latitude:F5}, {pointClosure.Longitude:F5})" : pointClosure.Name)
+                    <button type="button" class="btn btn-sm btn-warning float-end" @onclick="() => RemovePoint(pointClosure)" @onclick:stopPropagation="true">Удалить</button>
+
+                    @if (selectedPoint == pointClosure)
+                    {
+                        <div class="mt-2 p-2 border rounded">
+                            <div class="mb-2">
+                                <label>Название точки:</label>
+                                <InputText class="form-control form-control-sm" @bind-Value="pointClosure.Name"/>
+                            </div>
+                            <div class="mb-2">
+                                <label>Описание точки:</label>
+                                <InputTextArea class="form-control form-control-sm" @bind-Value="pointClosure.TextDescription" rows="2"/>
+                            </div>
+                            <div class="mb-2">
+                                <label>Изображения:</label>
+                                @if (pointClosure.TempImageReferences.Any())
+                                {
+                                    @foreach (var imageUrl in pointClosure.TempImageReferences)
+                                    {
+                                        var imageUrlClosure = imageUrl;
+                                        <div class="d-inline-block position-relative m-1">
+                                            <img src="@GetFullImageUrl(imageUrlClosure)" alt="Изображение точки" style="max-width: 80px; max-height: 80px; border:1px solid #ddd;"/>
+                                            <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 p-0"
+                                                    style="line-height: 1; font-size: 0.7rem;"
+                                                    @onclick="() => RemoveImageFromPoint(pointClosure, imageUrlClosure)" @onclick:stopPropagation="true">
+                                                ×
+                                            </button>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <small class="d-block text-muted">Нет изображений</small>
+                                }
+                                <InputFile OnChange="(e) => HandleImageUpload(e, pointClosure)" multiple accept=".jpg,.jpeg,.png,.gif" class="form-control form-control-sm mt-1"/>
+                            </div>
+                        </div>
+                    }
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p class="text-muted">Нет добавленных точек. @(isAddingPointsMode ? "Кликните на карту, чтобы добавить первую точку." : "Включите режим добавления точек и кликните на карту.")</p>
+    }
+
+    <button type="submit" class="btn btn-primary" disabled="@(isSaving || !tourRequestModel.Points.Any())">
+        @if (isSaving)
+        {
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span class="visually-hidden">Сохранение...</span>
+        }
+        else
+        {
+            <span>Сохранить маршрут</span>
+        }
+    </button>
+
+    @if (!string.IsNullOrWhiteSpace(saveMessage))
+    {
+        <div class="alert @(isSaveError ? "alert-danger" : "alert-success") mt-3" role="alert">
+            @saveMessage
+        </div>
+    }
+</EditForm>
+
+@code {
+    private CreateTourRequest tourRequestModel = new();
+    private TourPointRequest selectedPoint;
+
+    private bool isMapReady = false;
+    private bool isMapInitializing = true;
+    private bool isAddingPointsMode = false;
+    private bool isSaving = false;
+    private bool isSaveError = false;
+    private string saveMessage = string.Empty;
+    private string mapContainerId = "tour-create-map";
+
+    private HttpClient httpClient;
+    private DotNetObjectReference<CreateTourPage> dotNetObjectReference;
+    private string apiBaseUrl;
+
+    protected override void OnInitialized()
+    {
+        httpClient = HttpClientFactory.CreateClient("BackendAPI");
+        dotNetObjectReference = DotNetObjectReference.Create(this);
+        apiBaseUrl = httpClient.BaseAddress?.ToString().TrimEnd('/') ?? "http://localhost:5255";
+        Logger.LogInformation("CreateTourPage Initialized. API Base URL: {ApiBaseUrl}", apiBaseUrl);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            isMapInitializing = true;
+            await InvokeAsync(StateHasChanged);
+            await Task.Delay(100); // Ensure DOM is stable
+            await InitializeEditorMap();
+        }
+    }
+
+    private async Task InitializeEditorMap()
+    {
+        try
+        {
+            Logger.LogInformation("Попытка инициализации карты Leaflet для редактирования.");
+            var containerExists = await JSRuntime.InvokeAsync<bool>("eval", $"!!document.getElementById('{mapContainerId}')");
+            if (!containerExists)
+            {
+                Logger.LogError("Map container '{MapContainerId}' not found in DOM.", mapContainerId);
+                isMapInitializing = false;
+                saveMessage = "Ошибка: Контейнер карты не найден. Обновите страницу.";
+                isSaveError = true;
+                await InvokeAsync(StateHasChanged);
+                return;
+            }
+
+            await JSRuntime.InvokeVoidAsync("initLeafletMap", mapContainerId, 46.3497, 48.0302, 12, dotNetObjectReference);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Ошибка инициализации карты Leaflet для редактирования.");
+            isMapInitializing = false;
+            saveMessage = "Ошибка инициализации карты. Обновите страницу.";
+            isSaveError = true;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    [JSInvokable]
+    public void NotifyMapReadyInternal()
+    {
+        isMapReady = true;
+        isMapInitializing = false;
+        Logger.LogInformation("C#: Редакторская карта Leaflet готова.");
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void ToggleAddPointMode()
+    {
+        isAddingPointsMode = !isAddingPointsMode;
+        Logger.LogInformation("Режим добавления точек: {Mode}", isAddingPointsMode ? "Включен" : "Выключен");
+    }
+
+    [JSInvokable]
+    public async Task OnMapClicked(double lat, double lng)
+    {
+        if (!isAddingPointsMode || !isMapReady) return;
+
+        var newPoint = new TourPointRequest
+        {
+            Latitude = (decimal)lat,
+            Longitude = (decimal)lng,
+            Order = tourRequestModel.Points.Count + 1,
+            Name = $"Точка {tourRequestModel.Points.Count + 1}"
+        };
+        tourRequestModel.Points.Add(newPoint);
+        SelectPointForEditing(newPoint);
+
+        Logger.LogInformation("Добавлена новая точка: Lat={Lat}, Lng={Lng}, Order={Order}", lat, lng, newPoint.Order);
+        await JSRuntime.InvokeVoidAsync("addLeafletMarker", lat, lng, newPoint.Name);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void SelectPointForEditing(TourPointRequest point)
+    {
+        selectedPoint = point;
+        StateHasChanged();
+    }
+
+    private async Task HandleImageUpload(InputFileChangeEventArgs e, TourPointRequest point)
+    {
+        if (point == null || e.FileCount == 0) return;
+
+        Logger.LogInformation("Начало загрузки изображений для точки: {PointName}", point.Name ?? $"Точка {point.Order}");
+        isSaveError = false;
+        saveMessage = "";
+
+        foreach (var file in e.GetMultipleFiles(maximumFileCount: 5))
+        {
+            if (file.Size > 5 * 1024 * 1024)
+            {
+                saveMessage = $"Файл {file.Name} слишком большой (макс 5MB).";
+                isSaveError = true;
+                Logger.LogWarning("Попытка загрузить слишком большой файл: {FileName}, Размер: {FileSize}", file.Name, file.Size);
+                continue;
+            }
+
+            try
+            {
+                using var content = new MultipartFormDataContent();
+                using var streamContent = new StreamContent(file.OpenReadStream(maxAllowedSize: 5 * 1024 * 1024));
+                streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+                content.Add(content: streamContent, name: "\"file\"", fileName: file.Name);
+
+                Logger.LogInformation("Uploading file {FileName} to api/Files/upload-image", file.Name);
+                var response = await httpClient.PostAsync("api/Files/upload-image", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadFromJsonAsync<UploadResult>();
+                    if (result != null && !string.IsNullOrWhiteSpace(result.Url))
+                    {
+                        point.TempImageReferences.Add(result.Url);
+                        saveMessage = $"Файл {file.Name} успешно загружен.";
+                        Logger.LogInformation("Файл {FileName} загружен, URL: {FileUrl}", file.Name, result.Url);
+                    }
+                    else
+                    {
+                        saveMessage = $"Ошибка получения URL для файла {file.Name} после загрузки.";
+                        isSaveError = true;
+                        Logger.LogWarning("Не удалось получить URL для загруженного файла {FileName}", file.Name);
+                    }
+                }
+                else
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    saveMessage = $"Ошибка загрузки файла {file.Name}: {response.StatusCode}. Детали: {error}";
+                    isSaveError = true;
+                    Logger.LogError("Ошибка загрузки файла {FileName} на API: {StatusCode}, Ошибка: {Error}", file.Name, response.StatusCode, error);
+                }
+            }
+            catch (Exception ex)
+            {
+                saveMessage = $"Ошибка при обработке файла {file.Name}: {ex.Message}";
+                isSaveError = true;
+                Logger.LogError(ex, "Исключение при обработке файла {FileName}", file.Name);
+            }
+            finally
+            {
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+    }
+
+    private void RemoveImageFromPoint(TourPointRequest point, string imageUrl)
+    {
+        if (point == null) return;
+        point.TempImageReferences.Remove(imageUrl);
+        Logger.LogInformation("Удалено изображение {ImageUrl} с точки {PointName}", imageUrl, point.Name ?? $"Точка {point.Order}");
+        StateHasChanged();
+    }
+
+    private string GetFullImageUrl(string relativeUrl)
+    {
+        if (string.IsNullOrWhiteSpace(relativeUrl)) return string.Empty;
+        if (relativeUrl.StartsWith("http://") || relativeUrl.StartsWith("https://") || relativeUrl.StartsWith("data:"))
+        {
+            return relativeUrl;
+        }
+
+        return $"{apiBaseUrl.TrimEnd('/')}/{relativeUrl.TrimStart('/')}";
+    }
+
+    private async Task RemovePoint(TourPointRequest pointToRemove)
+    {
+        tourRequestModel.Points.Remove(pointToRemove);
+        if (selectedPoint == pointToRemove)
+        {
+            selectedPoint = null;
+        }
+
+        int currentOrder = 1;
+        foreach (var point in tourRequestModel.Points.OrderBy(p => p.Order))
+        {
+            point.Order = currentOrder++;
+        }
+
+        Logger.LogInformation("Удалена точка. Оставшиеся точки: {PointCount}", tourRequestModel.Points.Count);
+        await JSRuntime.InvokeVoidAsync("clearLeafletMapObjects");
+        foreach (var p in tourRequestModel.Points)
+        {
+            await JSRuntime.InvokeVoidAsync("addLeafletMarker", (double)p.Latitude, (double)p.Longitude, p.Name ?? $"Точка {p.Order}");
+        }
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        isSaving = true;
+        isSaveError = false;
+        saveMessage = string.Empty;
+        await InvokeAsync(StateHasChanged);
+
+        if (!tourRequestModel.Points.Any())
+        {
+            saveMessage = "Необходимо добавить хотя бы одну точку маршрута.";
+            isSaveError = true;
+            isSaving = false;
+            await InvokeAsync(StateHasChanged);
+            return;
+        }
+
+        int currentOrder = 1;
+        foreach (var point in tourRequestModel.Points.OrderBy(p => p.Order))
+        {
+            point.Order = currentOrder++;
+        }
+
+        Logger.LogInformation("Попытка сохранения маршрута: {@TourRequest}", tourRequestModel);
+
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync("api/Tours", tourRequestModel);
+
+            if (response.IsSuccessStatusCode)
+            {
+                saveMessage = "Маршрут успешно сохранен!";
+                Logger.LogInformation("Маршрут успешно сохранен. Ответ API: {StatusCode}", response.StatusCode);
+                tourRequestModel = new();
+                selectedPoint = null;
+                await JSRuntime.InvokeVoidAsync("clearLeafletMapObjects");
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                saveMessage = $"Ошибка сохранения маршрута: {response.StatusCode}. Детали: {error}";
+                isSaveError = true;
+                Logger.LogError("Ошибка сохранения маршрута. API ответил: {StatusCode}, Ошибка: {Error}", response.StatusCode, error);
+            }
+        }
+        catch (Exception ex)
+        {
+            saveMessage = $"Критическая ошибка при сохранении маршрута: {ex.Message}";
+            isSaveError = true;
+            Logger.LogError(ex, "Критическая ошибка при сохранении маршрута");
+        }
+        finally
+        {
+            isSaving = false;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (dotNetObjectReference != null)
+        {
+            dotNetObjectReference.Dispose();
+            dotNetObjectReference = null;
+        }
+
+        if (isMapReady)
+        {
+            try
+            {
+                await JSRuntime.InvokeVoidAsync("disposeLeafletMap");
+            }
+            catch (JSDisconnectedException)
+            {
+                Logger.LogInformation("JSDisconnectedException ignored during disposeLeafletMap.");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogWarning(ex, "Ошибка при вызове disposeLeafletMap в CreateTourPage.");
+            }
+        }
+    }
+
+    public class UploadResult
+    {
+        public string Url { get; set; }
+        public string FileName { get; set; }
+    }
+
+}

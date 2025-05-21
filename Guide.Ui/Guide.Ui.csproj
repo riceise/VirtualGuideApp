@@ -17,6 +17,11 @@
       <ProjectReference Include="..\Guide.Api\Guide.Api.csproj" />
       <ProjectReference Include="..\Guide.Data\Guide.Data.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\lib\" />
+      <Folder Include="wwwroot\Uploads\" />
+    </ItemGroup>
     
     
 

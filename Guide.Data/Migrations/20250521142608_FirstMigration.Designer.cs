@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Guide.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250514124423_FirstMigration")]
+    [Migration("20250521142608_FirstMigration")]
     partial class FirstMigration
     {
         /// <inheritdoc />
@@ -78,8 +78,9 @@ namespace Guide.Data.Migrations
                     b.Property<int?>("EstimatedDurationMinutes")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Theme")
                         .HasMaxLength(100)

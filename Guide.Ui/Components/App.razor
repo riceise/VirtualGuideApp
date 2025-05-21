@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="app.css"/>
     <link rel="stylesheet" href="Guide.Ui.styles.css"/>
     <link rel="icon" type="image/png" href="favicon.png"/>
+    <link rel="stylesheet" href="lib/leaflet/leaflet.css" />
     <HeadOutlet/>
 </head>
 
@@ -18,8 +19,8 @@
     <Routes @rendermode="RenderMode.InteractiveServer" />
 </CascadingAuthenticationState>
 <script src="_framework/blazor.server.js"></script>
-<script src="https://mapgl.2gis.com/api/js/v1?callback=onMapGlApiLoaded" async defer></script>
 <script src="js/mapInterop.js"></script>
+<script src="lib/leaflet/leaflet.js"> </script>
 </body>
 
 </html>

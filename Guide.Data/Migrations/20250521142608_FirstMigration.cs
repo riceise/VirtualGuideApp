@@ -169,7 +169,7 @@ namespace Guide.Data.Migrations
                     Description = table.Column<string>(type: "text", nullable: true),
                     Theme = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     CoverImageUrl = table.Column<string>(type: "character varying(2048)", maxLength: 2048, nullable: true),
-                    Status = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
                     EstimatedDurationMinutes = table.Column<int>(type: "integer", nullable: true),
                     EstimatedDistanceMeters = table.Column<int>(type: "integer", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),

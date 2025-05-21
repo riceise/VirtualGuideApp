@@ -75,8 +75,9 @@ namespace Guide.Data.Migrations
                     b.Property<int?>("EstimatedDurationMinutes")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Theme")
                         .HasMaxLength(100)

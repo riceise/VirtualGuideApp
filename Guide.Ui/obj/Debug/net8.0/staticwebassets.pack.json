@@ -25,6 +25,54 @@
       "PackagePath": "staticwebassets\\js\\mapInterop.js"
     },
     {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\layers-2x.png",
+      "PackagePath": "staticwebassets\\lib\\leaflet\\images\\layers-2x.png"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\layers.png",
+      "PackagePath": "staticwebassets\\lib\\leaflet\\images\\layers.png"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\marker-icon-2x.png",
+      "PackagePath": "staticwebassets\\lib\\leaflet\\images\\marker-icon-2x.png"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\marker-icon.png",
+      "PackagePath": "staticwebassets\\lib\\leaflet\\images\\marker-icon.png"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\marker-shadow.png",
+      "PackagePath": "staticwebassets\\lib\\leaflet\\images\\marker-shadow.png"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.esm.js",
+      "PackagePath": "staticwebassets\\lib\\leaflet\\leaflet-src.esm.js"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.esm.js.map",
+      "PackagePath": "staticwebassets\\lib\\leaflet\\leaflet-src.esm.js.map"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.js",
+      "PackagePath": "staticwebassets\\lib\\leaflet\\leaflet-src.js"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.js.map",
+      "PackagePath": "staticwebassets\\lib\\leaflet\\leaflet-src.js.map"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet.css",
+      "PackagePath": "staticwebassets\\lib\\leaflet\\leaflet.css"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet.js",
+      "PackagePath": "staticwebassets\\lib\\leaflet\\leaflet.js"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet.js.map",
+      "PackagePath": "staticwebassets\\lib\\leaflet\\leaflet.js.map"
+    },
+    {
       "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\user.png",
       "PackagePath": "staticwebassets\\user.png"
     },

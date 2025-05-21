@@ -1,0 +1,96 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Http.Json; 
+using System.Text.Json; 
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Guide.Data.Models;
+using Guide.Services.OrsHelper;
+
+
+namespace Guide.Services;
+
+public class OrsService : IOrsService
+{
+    private readonly HttpClient _httpClient;
+    private readonly string _apiKey;
+    private readonly ILogger<OrsService> _logger;
+
+    public OrsService(HttpClient httpClient, IConfiguration configuration, ILogger<OrsService> logger)
+    {
+        _httpClient = httpClient;
+        _apiKey = configuration["OpenRouteService:ApiKey"];
+        _logger = logger;
+
+        _httpClient.BaseAddress = new Uri("https://api.openrouteservice.org");
+        _httpClient.DefaultRequestHeaders.Clear();
+        _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/geo+json"));
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey); // Или просто _apiKey если он передается как параметр
+    }
+
+    public async Task<OrsDirectionsResponse> GetRouteAsync(List<List<double>> coordinates, string profile = "driving-car")
+    {
+        if (string.IsNullOrEmpty(_apiKey))
+        {
+            _logger.LogError("OpenRouteService API Key не настроен.");
+            return null; 
+        }
+        if (coordinates == null || coordinates.Count < 2)
+        {
+            _logger.LogWarning("Для построения маршрута необходимо как минимум 2 точки.");
+            return null;
+        }
+
+        var requestBody = new OrsRequestBody { Coordinates = coordinates };
+        var requestUrl = $"/v2/directions/{profile}/geojson"; // Используем /geojson для получения GeoJSON
+
+        // Для POST запроса с телом JSON:
+        // httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(_apiKey); // Если ключ в заголовке Authorization
+        // httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json; charset=utf-8");
+        // HttpResponseMessage response = await _httpClient.PostAsJsonAsync(requestUrl, requestBody);
+
+        // ИЛИ если API ключ в URL и это GET (для двух точек), ИЛИ POST с ключом в заголовке
+        // Для POST-запроса (как в вашем примере для нескольких точек):
+        var jsonRequestBody = JsonSerializer.Serialize(requestBody);
+        var content = new StringContent(jsonRequestBody, System.Text.Encoding.UTF8, "application/json");
+
+         // Проверяем, как ORS ожидает ключ для POST - в заголовке Authorization или как параметр api_key
+         // Судя по вашему curl для POST, ключ в заголовке Authorization:
+         // -H 'Authorization: 5b3ce3597851110001cf62487e880c5951724e8cb19731b1b33be92c'
+         // Значит, _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(_apiKey); должно быть правильно.
+         // Убедимся, что BaseAddress не содержит ключ, а URL запроса - только путь.
+
+        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(_apiKey); // Для ORS ключ передается так
+
+
+        _logger.LogInformation("Отправка запроса на ORS: URL={Url}, Тело={Body}", _httpClient.BaseAddress + requestUrl, jsonRequestBody);
+
+        try
+        {
+            HttpResponseMessage response = await _httpClient.PostAsync(requestUrl, content); // POST-запрос
+            
+            if (response.IsSuccessStatusCode)
+            {
+                var responseData = await response.Content.ReadFromJsonAsync<OrsDirectionsResponse>();
+                _logger.LogInformation("Ответ от ORS получен успешно.");
+                return responseData;
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                _logger.LogError("Ошибка от OpenRouteService: {StatusCode} - {ReasonPhrase}. Content: {ErrorContent}",
+                    response.StatusCode, response.ReasonPhrase, errorContent);
+                return null;
+            }
+        }
+        catch (Exception ex)
+        {
+             _logger.LogError(ex, "Исключение при запросе к OpenRouteService.");
+            return null;
+        }
+    }
+}

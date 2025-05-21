@@ -1,0 +1,49 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\130d6764-448e-4151-b0d9-924b5f3956e1.png",
+      "PackagePath": "staticwebassets\\Uploads\\130d6764-448e-4151-b0d9-924b5f3956e1.png"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\42ac7216-ae5d-45a0-81c8-7a5cb0801dae.png",
+      "PackagePath": "staticwebassets\\Uploads\\42ac7216-ae5d-45a0-81c8-7a5cb0801dae.png"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\4df43b63-da4e-4641-9489-06f1b92945fa.png",
+      "PackagePath": "staticwebassets\\Uploads\\4df43b63-da4e-4641-9489-06f1b92945fa.png"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\72f4b42f-fa99-4e12-af81-b3a4c87aa936.png",
+      "PackagePath": "staticwebassets\\Uploads\\72f4b42f-fa99-4e12-af81-b3a4c87aa936.png"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\b52e2c45-560d-45f3-8b38-ceee927f9453.png",
+      "PackagePath": "staticwebassets\\Uploads\\b52e2c45-560d-45f3-8b38-ceee927f9453.png"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\e95903a1-2ce7-4dbc-8746-8930ce1a0126.png",
+      "PackagePath": "staticwebassets\\Uploads\\e95903a1-2ce7-4dbc-8746-8930ce1a0126.png"
+    },
+    {
+      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\ff1f874c-c0c8-426a-941f-5c783c65ec17.png",
+      "PackagePath": "staticwebassets\\Uploads\\ff1f874c-c0c8-426a-941f-5c783c65ec17.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Guide.Api.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.Guide.Api.props",
+      "PackagePath": "build\\Guide.Api.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.Guide.Api.props",
+      "PackagePath": "buildMultiTargeting\\Guide.Api.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.Guide.Api.props",
+      "PackagePath": "buildTransitive\\Guide.Api.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Text;
 using Guide.Controllers;
 using Guide.Data.Models;
+using Guide.Services;
 using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,7 +32,7 @@ builder.Services.AddIdentity<User, IdentityRole<Guid>>()
     .AddDefaultTokenProviders()
     .AddErrorDescriber<RussianIdentityErrorDescriber>();
 
-
+builder.Services.AddHttpClient<IOrsService, OrsService>();
 
 
 
@@ -57,7 +58,12 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+
+
 var app = builder.Build();
+
+app.UseStaticFiles();
+
 
 if (app.Environment.IsDevelopment())
 {

@@ -163,3 +163,4 @@ C:\Users\murad\RiderProjects\Guide\Guide.Api\bin\Debug\net8.0\runtimes\win-x64\n
 C:\Users\murad\RiderProjects\Guide\Guide.Api\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\murad\RiderProjects\Guide\Guide.Api\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
 C:\Users\murad\RiderProjects\Guide\Guide.Api\bin\Debug\net8.0\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\murad\RiderProjects\Guide\Guide.Api\bin\Debug\net8.0\Guide.Api.staticwebassets.runtime.json

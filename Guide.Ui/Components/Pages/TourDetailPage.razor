@@ -1,0 +1,317 @@
+﻿@page "/tours/{TourId:guid}"
+@inject IJSRuntime JSRuntime
+@inject NavigationManager Navigation
+@inject IHttpClientFactory HttpClientFactory
+@inject ILogger<TourDetailPage> Logger
+@implements IAsyncDisposable
+
+@if (isLoading)
+{
+    <p>
+        <em>Загрузка деталей маршрута...</em>
+    </p>
+}
+else if (isLoadingError)
+{
+    <p class="text-danger">Ошибка загрузки данных маршрута: @errorMessage Пожалуйста, попробуйте позже.</p>
+}
+else if (tourDetails != null)
+{
+    <h3>@tourDetails.Title</h3>
+    <p>@tourDetails.Description</p>
+    @if (tourDetails.TotalDistanceMeters.HasValue)
+    {
+        <p>Примерное расстояние: @(Math.Round(tourDetails.TotalDistanceMeters.Value / 1000, 2)) км</p>
+    }
+
+    @if (tourDetails.TotalDurationSeconds.HasValue)
+    {
+        <p>Примерное время: @TimeSpan.FromSeconds(tourDetails.TotalDurationSeconds.Value).ToString(@"hh\:mm\:ss")</p>
+    }
+
+    <div style="position: relative; height: 500px; width: 100%; border: 1px solid #ccc;">
+        <div id="@mapContainerId" style="height: 100%; width: 100%;"></div>
+
+        @if (isMapInitializing)
+        {
+            <div class="d-flex justify-content-center align-items-center"
+                 style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: #f0f0f0; z-index: 1000;">
+                <p class="m-0">Инициализация карты...</p>
+            </div>
+        }
+    </div>
+    @if (!isMapReady && !isMapInitializing)
+    {
+        <p class="text-danger">Не удалось инициализировать карту. Пожалуйста, обновите страницу.</p>
+    }
+
+    @if (tourDetails.Stops.Any())
+    {
+        <h4>Точки маршрута:</h4>
+        <ul class="list-group mt-3">
+            @foreach (var stop in tourDetails.Stops.OrderBy(s => s.Order))
+            {
+                <li class="list-group-item">
+                    <h5>
+                        <strong>@stop.Order. @stop.Name</strong>
+                    </h5>
+                    @if (!string.IsNullOrWhiteSpace(stop.TextDescription))
+                    {
+                        <p>@stop.TextDescription</p>
+                    }
+                    @if (stop.ImageUrls.Any())
+                    {
+                        <div>
+                            @foreach (var imageUrl in stop.ImageUrls)
+                            {
+                                <img src="@GetFullImageUrl(imageUrl)" alt="@stop.Name" style="max-width:100px; max-height:100px; margin:5px; border:1px solid #ddd;"/>
+                            }
+                        </div>
+                    }
+                </li>
+            }
+        </ul>
+    }
+}
+else
+{
+    <p>Маршрут не найден или данные не загружены.</p>
+}
+
+@code {
+    [Parameter] public Guid TourId { get; set; }
+
+    private Guide.Api.Controllers.ToursController.TourDetailsResponse tourDetails;
+    private bool isLoading = true;
+    private bool isLoadingError = false;
+    private bool isMapReady = false;
+    private bool isMapInitializing = false; // Изначально false. Будет true только во время активной попытки инициализации.
+    private string errorMessage = string.Empty;
+    private string apiBaseUrl;
+    private HttpClient httpClient;
+    private DotNetObjectReference<TourDetailPage> dotNetObjectReference;
+    private string mapContainerId = "tour-detail-map"; // Уникальный ID
+    private CancellationTokenSource mapInitCts;
+
+    private bool _mapInitializationAttempted = false; // Флаг, что попытка инициализации была
+
+    protected override async Task OnInitializedAsync()
+    {
+        httpClient = HttpClientFactory.CreateClient("BackendAPI");
+        apiBaseUrl = httpClient.BaseAddress?.ToString().TrimEnd('/') ?? "http://localhost:5255";
+        Logger.LogInformation("TourDetailPage Initialized for TourId: {TourId}. API Base URL: {ApiBaseUrl}", TourId, apiBaseUrl);
+
+        dotNetObjectReference = DotNetObjectReference.Create(this);
+        mapInitCts = new CancellationTokenSource(TimeSpan.FromSeconds(15)); // Увеличим тайм-аут на всякий случай
+
+        await LoadTourDetails();
+    }
+
+    private async Task LoadTourDetails()
+    {
+        isLoading = true;
+        isLoadingError = false;
+        isMapReady = false; // Сброс состояния карты
+        _mapInitializationAttempted = false; // Сброс флага попытки
+        // isMapInitializing НЕ устанавливаем здесь в true.
+        errorMessage = string.Empty;
+        await InvokeAsync(StateHasChanged);
+
+        try
+        {
+            Logger.LogInformation("Загрузка деталей для тура: {TourId}", TourId);
+            tourDetails = await httpClient.GetFromJsonAsync<Guide.Api.Controllers.ToursController.TourDetailsResponse>($"api/Tours/{TourId}/details");
+
+            if (tourDetails == null)
+            {
+                Logger.LogWarning("Детали тура не найдены для TourId: {TourId}", TourId);
+                isLoadingError = true;
+                errorMessage = "Данные тура не найдены.";
+            }
+            else
+            {
+                Logger.LogInformation("Детали тура для TourId: {TourId} успешно загружены. Название: {TourTitle}", TourId, tourDetails.Title);
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            Logger.LogError(ex, "Ошибка HTTP при загрузке деталей тура {TourId}", TourId);
+            isLoadingError = true;
+            errorMessage = $"Ошибка сети: {ex.Message}";
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Общая ошибка загрузки деталей тура {TourId}", TourId);
+            isLoadingError = true;
+            errorMessage = $"Произошла ошибка: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        
+        if (!isLoading && tourDetails != null && !isLoadingError && !isMapReady && !_mapInitializationAttempted)
+        {
+            _mapInitializationAttempted = true; 
+            await InitializeAndDisplayMap();
+        }
+    }
+
+    private async Task InitializeAndDisplayMap()
+    {
+        
+        isMapInitializing = true; 
+        await InvokeAsync(StateHasChanged); 
+
+        Logger.LogInformation("Начало инициализации карты Leaflet для тура: {TourTitle}", tourDetails.Title);
+
+        try
+        {
+            var containerExists = await JSRuntime.InvokeAsync<bool>("eval", $"!!document.getElementById('{mapContainerId}')");
+            if (!containerExists)
+            {
+                Logger.LogError("Контейнер карты '{MapContainerId}' не найден в DOM.", mapContainerId);
+                isMapInitializing = false; 
+                isLoadingError = true; 
+                errorMessage = "Ошибка: Контейнер карты не найден. Обновите страницу.";
+                await InvokeAsync(StateHasChanged);
+                return;
+            }
+
+            var firstStop = tourDetails.Stops.OrderBy(s => s.Order).FirstOrDefault();
+            double centerLat = firstStop?.Latitude ?? 46.3497; 
+            double centerLng = firstStop?.Longitude ?? 48.0302; 
+
+            await JSRuntime.InvokeVoidAsync("initLeafletMap", mapInitCts.Token, mapContainerId, centerLat, centerLng, 13, dotNetObjectReference);
+        }
+        catch (OperationCanceledException) 
+        {
+            Logger.LogError(mapInitCts.Token.IsCancellationRequested ? "Тайм-аут JS Interop вызова initLeafletMap." : "Операция отменена.", "Тайм-аут инициализации карты для тура: {TourTitle}", tourDetails.Title);
+            isMapInitializing = false; 
+            isLoadingError = true;
+            errorMessage = "Превышено время ожидания инициализации карты.";
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (JSException ex) 
+        {
+            Logger.LogError(ex, "JS ошибка во время вызова initLeafletMap для тура: {TourTitle}", tourDetails.Title);
+            isMapInitializing = false; 
+            isLoadingError = true;
+            errorMessage = $"JS ошибка инициализации карты: {ex.Message}";
+            await InvokeAsync(StateHasChanged);
+        }
+        catch (Exception ex) 
+        {
+            Logger.LogError(ex, "Общая ошибка инициализации карты Leaflet для тура: {TourTitle}", tourDetails.Title);
+            isMapInitializing = false; 
+            isLoadingError = true;
+            errorMessage = $"Ошибка инициализации карты: {ex.Message}";
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    [JSInvokable]
+    public async Task NotifyMapReadyInternal()
+    {
+        isMapReady = true;
+        isMapInitializing = false; 
+        Logger.LogInformation("C#: Карта Leaflet готова для тура: {TourTitle}. Отрисовка контента.", tourDetails?.Title);
+        await InvokeAsync(StateHasChanged); 
+
+        if (tourDetails == null || !tourDetails.Stops.Any())
+        {
+            Logger.LogWarning("Данные тура отсутствуют или нет точек для отображения на карте после готовности карты.");
+            return;
+        }
+
+        try
+        {
+            foreach (var stop in tourDetails.Stops.OrderBy(s => s.Order))
+            {
+                await JSRuntime.InvokeVoidAsync("addLeafletMarker", stop.Latitude, stop.Longitude, stop.Name ?? $"Точка {stop.Order}");
+            }
+
+            if (tourDetails.RouteSegmentsGeometry != null && tourDetails.RouteSegmentsGeometry.Any())
+            {
+                foreach (var segmentGeometry in tourDetails.RouteSegmentsGeometry)
+                {
+                    if (segmentGeometry != null && segmentGeometry.Any())
+                    {
+                        var jsRoute = segmentGeometry.Select(coord => new[] { coord[0], coord[1] }).ToList();
+                        await JSRuntime.InvokeVoidAsync("drawLeafletRoute", jsRoute, "purple", 5);
+                    }
+                }
+            }
+
+            var stopLatLngs = tourDetails.Stops.Select(s => new List<double> { s.Latitude, s.Longitude }).ToList();
+            if (stopLatLngs.Any())
+            {
+                await JSRuntime.InvokeVoidAsync("fitMapToPoints", stopLatLngs);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Ошибка при отрисовке объектов на карте для тура: {TourTitle}", tourDetails.Title);
+            errorMessage = $"Ошибка отображения объектов на карте: {ex.Message}";
+            isLoadingError = true; 
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    [JSInvokable]
+    public void OnMapClicked(double lat, double lng) 
+    {
+        Logger.LogInformation("Карта кликнута (страница деталей тура): Lat={Lat}, Lng={Lng}. Действий не предпринимается.", lat, lng);
+    }
+
+
+    private string GetFullImageUrl(string relativeUrl)
+    {
+        if (string.IsNullOrWhiteSpace(relativeUrl)) return string.Empty;
+        if (relativeUrl.StartsWith("http://") || relativeUrl.StartsWith("https://") || relativeUrl.StartsWith("data:"))
+        {
+            return relativeUrl;
+        }
+
+        return $"{apiBaseUrl.TrimEnd('/')}/{relativeUrl.TrimStart('/')}";
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (mapInitCts != null)
+        {
+            mapInitCts.Cancel(); 
+            mapInitCts.Dispose();
+            mapInitCts = null;
+        }
+
+        if (dotNetObjectReference != null)
+        {
+            dotNetObjectReference.Dispose();
+            dotNetObjectReference = null;
+        }
+
+        if (isMapReady && JSRuntime != null) 
+        {
+            try
+            {
+                await JSRuntime.InvokeVoidAsync("disposeLeafletMap");
+                Logger.LogInformation("disposeLeafletMap вызван для {MapContainerId} на странице TourDetailPage", mapContainerId);
+            }
+            catch (JSDisconnectedException)
+            {
+                Logger.LogInformation("JSDisconnectedException проигнорирован при вызове disposeLeafletMap (TourDetailPage).");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogWarning(ex, "Ошибка при вызове disposeLeafletMap в TourDetailPage.");
+            }
+        }
+    }
+
+}

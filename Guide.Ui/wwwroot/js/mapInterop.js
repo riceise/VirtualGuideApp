@@ -1,171 +1,144 @@
-﻿// wwwroot/js/mapInterop.js
+﻿let mapInstance = null;
+let dotNetReference = null;
+let drawnLayers = [];
 
-var mapInstance = null;
-var dotNetReference = null;
-var mapGlApiReady = false; // Флаг готовности API
-var pendingInitOptions = null;
-
-window.onMapGlApiLoaded = () => {
-    console.log("MapGL API (mapgl) is now loaded.");
-    mapGlApiReady = true;
-    if (pendingInitOptions) {
-        window.initMap(
-            pendingInitOptions.mapContainerId,
-            pendingInitOptions.apiKey,
-            pendingInitOptions.centerLat,
-            pendingInitOptions.centerLng,
-            pendingInitOptions.zoom,
-            pendingInitOptions.dotNetRef,
-            true // Флаг, что API уже точно готово
-        );
-        pendingInitOptions = null; // Сбрасываем
-    }
-};
-// Функция инициализации карты
-window.initMap = (mapContainerId, apiKey, centerLat, centerLng, zoom, dotNetRef, apiIsReady = false) => {
+window.initLeafletMap = (mapContainerId, centerLat, centerLng, zoom, dotNetRef) => {
     dotNetReference = dotNetRef;
+    console.log(`Attempting to initialize Leaflet map for container: ${mapContainerId}`);
 
-    if (!mapGlApiReady && !apiIsReady) {
-        // ... (логика отложенной инициализации остается) ...
-        return Promise.resolve("MapGL API loading, initMap queued.");
-    }
-
-    // ОЧИСТКА КОНТЕЙНЕРА ПЕРЕД ИНИЦИАЛИЗАЦИЕЙ КАРТЫ
     const mapContainer = document.getElementById(mapContainerId);
-    if (mapContainer) {
-        mapContainer.innerHTML = ''; // Очищаем содержимое
-    } else {
-        console.error(`Map container with id '${mapContainerId}' not found.`);
-        return Promise.reject(`Map container with id '${mapContainerId}' not found.`);
+    if (!mapContainer) {
+        console.error(`Map container '${mapContainerId}' not found. Retrying...`);
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                const retryContainer = document.getElementById(mapContainerId);
+                if (retryContainer) {
+                    console.log(`Retry successful: Map container '${mapContainerId}' found.`);
+                    initializeMap(retryContainer, mapContainerId, centerLat, centerLng, zoom);
+                    resolve("Leaflet map initialized successfully.");
+                } else {
+                    console.error(`Map container '${mapContainerId}' still not found after retry.`);
+                    reject("Map container not found.");
+                }
+            }, 100);
+        });
     }
 
+    console.log(`Clearing map container content for '${mapContainerId}'.`);
+    mapContainer.innerHTML = '';
+    return initializeMap(mapContainer, mapContainerId, centerLat, centerLng, zoom);
+};
+
+function initializeMap(mapContainer, mapContainerId, centerLat, centerLng, zoom) {
     if (mapInstance) {
-        mapInstance.destroy();
+        try {
+            mapInstance.remove();
+        } catch (error) {
+            console.warn("Error removing existing map instance:", error);
+        }
         mapInstance = null;
     }
+    drawnLayers = [];
 
     try {
-        console.log("Attempting to initialize MapGL map in container:", mapContainerId);
-        mapInstance = new mapgl.Map(mapContainerId, {
-            center: [centerLng, centerLat],
-            zoom: zoom,
-            key: apiKey
-        });
+        mapInstance = L.map(mapContainerId).setView([centerLat, centerLng], zoom);
 
-        // ... (обработчик 'click' и 'load') ...
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(mapInstance);
 
-        console.log("MapGL map initialized successfully.");
-        return Promise.resolve("Map initialized successfully with MapGL API");
-
-    } catch (error) {
-        console.error("Error initializing MapGL map:", error);
-        return Promise.reject("Error initializing MapGL map: " + error.message);
-    }
-};
-// Функция добавления маркера
-window.addMarkerToMap = (lat, lng, popupText) => { // popupText пока не используется, нужно смотреть API для попапов
-    if (mapInstance) {
-        new mapgl.Marker(mapInstance, {
-            coordinates: [lng, lat], // MapGL API ожидает [долгота, широта]
-            // Для popupText нужно будет смотреть, как MapGL API обрабатывает их.
-            // Возможно, через label или кастомный HTML.
-            // Пример с label (простой текст):
-            // label: {
-            //    text: popupText || '',
-            //    offset: [0, -20], // смещение текста относительно маркера
-            //    fontSize: '12px',
-            //    color: '#000000'
-            // }
-        });
-    } else {
-        console.error("MapGL instance not available to add marker.");
-    }
-};
-
-// Функция отображения маршрута (полилинии)
-// pointsArray - массив массивов [[lng1, lat1], [lng2, lat2], ...]
-window.drawRouteOnMap = (pointsArray, color = 'blue', width = 3) => { // Обратите внимание на 'width' вместо 'weight'
-    if (mapInstance && pointsArray && pointsArray.length > 1) {
-        // Для рисования линии в MapGL JS API нужно использовать источники данных (Data Source) и слои (Layer)
-        // Это сложнее, чем просто DG.polyline.
-        // Примерно так:
-        const routeId = 'route-' + Date.now(); // Уникальный ID для источника и слоя
-
-        // 1. Создаем GeoJSON объект для линии
-        const routeGeoJson = {
-            type: 'Feature',
-            geometry: {
-                type: 'LineString',
-                coordinates: pointsArray // массив координат [[lng, lat], [lng, lat], ...]
-            },
-            properties: {}
-        };
-
-        // 2. Добавляем источник данных
-        mapInstance.addSource(routeId, {
-            type: 'geojson',
-            data: routeGeoJson
-        });
-
-        // 3. Добавляем слой для отображения линии
-        mapInstance.addLayer({
-            id: routeId + '-layer',
-            type: 'line',
-            source: routeId,
-            paint: {
-                'line-color': color,
-                'line-width': width
+        mapInstance.on('click', function (e) {
+            if (dotNetReference) {
+                dotNetReference.invokeMethodAsync('OnMapClicked', e.latlng.lat, e.latlng.lng).catch(err => {
+                    console.error("Error invoking OnMapClicked:", err);
+                });
             }
         });
 
-        // Подгонка карты под маршрут (требует вычисления bounds)
-        // const bounds = pointsArray.reduce((bounds, coord) => {
-        //     return bounds.extend(coord);
-        // }, new mapgl.LngLatBounds(pointsArray[0], pointsArray[0]));
-        // mapInstance.fitBounds(bounds, { padding: 20 });
+        if (dotNetReference) {
+            dotNetReference.invokeMethodAsync('NotifyMapReadyInternal').catch(err => {
+                console.error("Error invoking NotifyMapReadyInternal:", err);
+            });
+        }
 
-    } else {
-        console.error("MapGL instance or points not available to draw route.");
+        return Promise.resolve("Leaflet map initialized successfully.");
+    } catch (error) {
+        console.error("Error initializing Leaflet map:", error);
+        return Promise.reject("Error initializing Leaflet map.");
+    }
+}
+
+window.addLeafletMarker = (lat, lng, popupText) => {
+    if (!mapInstance) {
+        console.warn("Cannot add marker: mapInstance is null.");
+        return;
+    }
+    try {
+        const marker = L.marker([lat, lng]).addTo(mapInstance);
+        if (popupText) {
+            marker.bindPopup(popupText);
+        }
+        drawnLayers.push(marker);
+    } catch (error) {
+        console.error("Error adding Leaflet marker:", error);
     }
 };
 
-// Функция центрирования карты
-window.setMapView = (lat, lng, zoom) => {
-    if (mapInstance) {
-        mapInstance.setCenter([lng, lat]); // MapGL API ожидает [долгота, широта]
-        mapInstance.setZoom(zoom);
+window.drawLeafletRoute = (routeCoordinates, color = 'blue', weight = 3) => {
+    if (!mapInstance || !routeCoordinates || routeCoordinates.length < 2) {
+        console.warn("Cannot draw route: invalid map instance or route coordinates.");
+        return;
+    }
+
+    try {
+        const latLngPoints = routeCoordinates.map(coord => [coord[1], coord[0]]);
+        const polyline = L.polyline(latLngPoints, { color: color, weight: weight }).addTo(mapInstance);
+        drawnLayers.push(polyline);
+        mapInstance.fitBounds(polyline.getBounds());
+    } catch (error) {
+        console.error("Error drawing Leaflet route:", error);
     }
 };
 
-// Функция очистки объектов
-// С MapGL это сложнее, т.к. объекты добавляются через источники и слои.
-// Нужно удалять конкретные слои и источники по их ID.
-window.clearMapObjects = () => {
+window.clearLeafletMapObjects = () => {
     if (mapInstance) {
-        // Это очень грубый способ, он удалит ВСЕ слои и источники,
-        // включая базовую карту, если не быть осторожным.
-        // Лучше запоминать ID добавленных слоев/источников и удалять их по ID.
-
-        // Пример: если вы знаете ID добавленных слоев и источников
-        // const layerIdsToRemove = ['route-xxxx-layer', 'another-layer-id'];
-        // const sourceIdsToRemove = ['route-xxxx', 'another-source-id'];
-        // layerIdsToRemove.forEach(id => { if (mapInstance.getLayer(id)) mapInstance.removeLayer(id); });
-        // sourceIdsToRemove.forEach(id => { if (mapInstance.getSource(id)) mapInstance.removeSource(id); });
-
-        console.warn("clearMapObjects for MapGL is more complex. Implement specific removal logic.");
+        try {
+            drawnLayers.forEach(layer => {
+                mapInstance.removeLayer(layer);
+            });
+            drawnLayers = [];
+        } catch (error) {
+            console.error("Error clearing Leaflet map objects:", error);
+        }
     }
 };
 
-window.disposeMap = () => {
-    if (mapInstance) {
-        mapInstance.destroy();
-        mapInstance = null;
+window.fitMapToPoints = (points) => {
+    if (!mapInstance || !points || points.length === 0) {
+        console.warn("Cannot fit map to points: invalid map instance or points.");
+        return;
     }
-    if (dotNetReference) {
-        dotNetReference.dispose();
-        dotNetReference = null;
+    try {
+        const bounds = L.latLngBounds(points);
+        mapInstance.fitBounds(bounds, { padding: [30, 30] });
+    } catch (error) {
+        console.error("Error fitting map to points:", error);
     }
-    mapGlApiReady = false; // Сбрасываем флаг при уничтожении
-    pendingInitOptions = null;
-    console.log("MapGL map disposed.");
+};
+
+window.disposeLeafletMap = () => {
+    try {
+        if (mapInstance) {
+            mapInstance.remove();
+            mapInstance = null;
+        }
+        drawnLayers = [];
+        if (dotNetReference) {
+            dotNetReference.dispose();
+            dotNetReference = null;
+        }
+        console.log("Leaflet map disposed successfully.");
+    } catch (error) {
+        console.warn("Error disposing Leaflet map:", error);
+    }
 };

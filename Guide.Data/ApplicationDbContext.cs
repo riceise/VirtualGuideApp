@@ -28,6 +28,10 @@ public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<Guid>, 
         builder.Entity<User>()
             .Property(u => u.Role)
             .HasConversion<string>()
-            .IsRequired(); 
+            .IsRequired();
+        builder.Entity<Tour>()
+            .Property(t => t.Status)
+            .HasConversion<string>()
+            .IsRequired();
     }
 }
