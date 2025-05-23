@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "Hash": "vrE4lCcQWlF4QDE5x/kfVE2uJumxBHUQpQlkPNhzYdk=",
+  "Hash": "QqTHYiS4ujRpF9oEK837z2B32fehHcr2NhzNFkMRExI=",
   "Source": "Guide.Ui",
   "BasePath": "_content/Guide.Ui",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\Guide.Api.csproj",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\Guide.Api.csproj",
       "Version": 2,
       "Source": "Guide.Api",
       "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
@@ -18,7 +18,7 @@
       "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Data\\Guide.Data.csproj",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Data\\Guide.Data.csproj",
       "Version": 2,
       "Source": "Guide.Data",
       "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
@@ -33,24 +33,24 @@
     {
       "Name": "Guide.Api\\wwwroot",
       "Source": "Guide.Api",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\",
       "BasePath": "_content/Guide.Api",
       "Pattern": "**"
     },
     {
       "Name": "Guide.Ui\\wwwroot",
       "Source": "Guide.Ui",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\130d6764-448e-4151-b0d9-924b5f3956e1.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\Uploads\\130d6764-448e-4151-b0d9-924b5f3956e1.png",
       "SourceId": "Guide.Api",
       "SourceType": "Project",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\",
       "BasePath": "_content/Guide.Api",
       "RelativePath": "Uploads/130d6764-448e-4151-b0d9-924b5f3956e1.png",
       "AssetKind": "All",
@@ -66,10 +66,10 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\130d6764-448e-4151-b0d9-924b5f3956e1.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\42ac7216-ae5d-45a0-81c8-7a5cb0801dae.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\Uploads\\42ac7216-ae5d-45a0-81c8-7a5cb0801dae.png",
       "SourceId": "Guide.Api",
       "SourceType": "Project",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\",
       "BasePath": "_content/Guide.Api",
       "RelativePath": "Uploads/42ac7216-ae5d-45a0-81c8-7a5cb0801dae.png",
       "AssetKind": "All",
@@ -85,10 +85,10 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\42ac7216-ae5d-45a0-81c8-7a5cb0801dae.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\4df43b63-da4e-4641-9489-06f1b92945fa.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\Uploads\\4df43b63-da4e-4641-9489-06f1b92945fa.png",
       "SourceId": "Guide.Api",
       "SourceType": "Project",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\",
       "BasePath": "_content/Guide.Api",
       "RelativePath": "Uploads/4df43b63-da4e-4641-9489-06f1b92945fa.png",
       "AssetKind": "All",
@@ -104,10 +104,10 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\4df43b63-da4e-4641-9489-06f1b92945fa.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\72f4b42f-fa99-4e12-af81-b3a4c87aa936.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\Uploads\\72f4b42f-fa99-4e12-af81-b3a4c87aa936.png",
       "SourceId": "Guide.Api",
       "SourceType": "Project",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\",
       "BasePath": "_content/Guide.Api",
       "RelativePath": "Uploads/72f4b42f-fa99-4e12-af81-b3a4c87aa936.png",
       "AssetKind": "All",
@@ -123,10 +123,10 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\72f4b42f-fa99-4e12-af81-b3a4c87aa936.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\b52e2c45-560d-45f3-8b38-ceee927f9453.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\Uploads\\b52e2c45-560d-45f3-8b38-ceee927f9453.png",
       "SourceId": "Guide.Api",
       "SourceType": "Project",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\",
       "BasePath": "_content/Guide.Api",
       "RelativePath": "Uploads/b52e2c45-560d-45f3-8b38-ceee927f9453.png",
       "AssetKind": "All",
@@ -142,10 +142,10 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\b52e2c45-560d-45f3-8b38-ceee927f9453.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\e95903a1-2ce7-4dbc-8746-8930ce1a0126.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\Uploads\\e95903a1-2ce7-4dbc-8746-8930ce1a0126.png",
       "SourceId": "Guide.Api",
       "SourceType": "Project",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\",
       "BasePath": "_content/Guide.Api",
       "RelativePath": "Uploads/e95903a1-2ce7-4dbc-8746-8930ce1a0126.png",
       "AssetKind": "All",
@@ -161,10 +161,10 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\e95903a1-2ce7-4dbc-8746-8930ce1a0126.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\ff1f874c-c0c8-426a-941f-5c783c65ec17.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\Uploads\\ff1f874c-c0c8-426a-941f-5c783c65ec17.png",
       "SourceId": "Guide.Api",
       "SourceType": "Project",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\",
       "BasePath": "_content/Guide.Api",
       "RelativePath": "Uploads/ff1f874c-c0c8-426a-941f-5c783c65ec17.png",
       "AssetKind": "All",
@@ -180,10 +180,10 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\ff1f874c-c0c8-426a-941f-5c783c65ec17.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\obj\\Debug\\net8.0\\scopedcss\\bundle\\Guide.Ui.styles.css",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\obj\\Debug\\net8.0\\scopedcss\\bundle\\Guide.Ui.styles.css",
       "SourceId": "Guide.Ui",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "Guide.Ui.styles.css",
       "AssetKind": "All",
@@ -196,13 +196,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\obj\\Debug\\net8.0\\scopedcss\\bundle\\Guide.Ui.styles.css"
+      "OriginalItemSpec": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\obj\\Debug\\net8.0\\scopedcss\\bundle\\Guide.Ui.styles.css"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Guide.Ui.bundle.scp.css",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Guide.Ui.bundle.scp.css",
       "SourceId": "Guide.Ui",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "Guide.Ui.bundle.scp.css",
       "AssetKind": "All",
@@ -215,13 +215,13 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Guide.Ui.bundle.scp.css"
+      "OriginalItemSpec": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Guide.Ui.bundle.scp.css"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\app.css",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\app.css",
       "SourceId": "Guide.Ui",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "app.css",
       "AssetKind": "All",
@@ -237,10 +237,10 @@
       "OriginalItemSpec": "wwwroot\\app.css"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\bootstrap\\bootstrap.min.css",
       "SourceId": "Guide.Ui",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "bootstrap/bootstrap.min.css",
       "AssetKind": "All",
@@ -256,10 +256,10 @@
       "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\bootstrap\\bootstrap.min.css.map",
       "SourceId": "Guide.Ui",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "bootstrap/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -275,10 +275,10 @@
       "OriginalItemSpec": "wwwroot\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\favicon.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\favicon.png",
       "SourceId": "Guide.Ui",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "favicon.png",
       "AssetKind": "All",
@@ -294,10 +294,10 @@
       "OriginalItemSpec": "wwwroot\\favicon.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\js\\mapInterop.js",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\js\\mapInterop.js",
       "SourceId": "Guide.Ui",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "js/mapInterop.js",
       "AssetKind": "All",
@@ -313,10 +313,10 @@
       "OriginalItemSpec": "wwwroot\\js\\mapInterop.js"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\layers-2x.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\layers-2x.png",
       "SourceId": "Guide.Ui",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "lib/leaflet/images/layers-2x.png",
       "AssetKind": "All",
@@ -332,10 +332,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\leaflet\\images\\layers-2x.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\layers.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\layers.png",
       "SourceId": "Guide.Ui",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "lib/leaflet/images/layers.png",
       "AssetKind": "All",
@@ -351,10 +351,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\leaflet\\images\\layers.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\marker-icon-2x.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\marker-icon-2x.png",
       "SourceId": "Guide.Ui",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "lib/leaflet/images/marker-icon-2x.png",
       "AssetKind": "All",
@@ -370,10 +370,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\leaflet\\images\\marker-icon-2x.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\marker-icon.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\marker-icon.png",
       "SourceId": "Guide.Ui",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "lib/leaflet/images/marker-icon.png",
       "AssetKind": "All",
@@ -389,10 +389,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\leaflet\\images\\marker-icon.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\marker-shadow.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\marker-shadow.png",
       "SourceId": "Guide.Ui",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "lib/leaflet/images/marker-shadow.png",
       "AssetKind": "All",
@@ -408,10 +408,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\leaflet\\images\\marker-shadow.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.esm.js",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.esm.js",
       "SourceId": "Guide.Ui",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "lib/leaflet/leaflet-src.esm.js",
       "AssetKind": "All",
@@ -427,10 +427,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\leaflet\\leaflet-src.esm.js"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.esm.js.map",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.esm.js.map",
       "SourceId": "Guide.Ui",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "lib/leaflet/leaflet-src.esm.js.map",
       "AssetKind": "All",
@@ -446,10 +446,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\leaflet\\leaflet-src.esm.js.map"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.js",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.js",
       "SourceId": "Guide.Ui",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "lib/leaflet/leaflet-src.js",
       "AssetKind": "All",
@@ -465,10 +465,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\leaflet\\leaflet-src.js"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.js.map",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.js.map",
       "SourceId": "Guide.Ui",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "lib/leaflet/leaflet-src.js.map",
       "AssetKind": "All",
@@ -484,10 +484,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\leaflet\\leaflet-src.js.map"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet.css",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet.css",
       "SourceId": "Guide.Ui",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "lib/leaflet/leaflet.css",
       "AssetKind": "All",
@@ -503,10 +503,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\leaflet\\leaflet.css"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet.js",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet.js",
       "SourceId": "Guide.Ui",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "lib/leaflet/leaflet.js",
       "AssetKind": "All",
@@ -522,10 +522,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\leaflet\\leaflet.js"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet.js.map",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet.js.map",
       "SourceId": "Guide.Ui",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "lib/leaflet/leaflet.js.map",
       "AssetKind": "All",
@@ -541,10 +541,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\leaflet\\leaflet.js.map"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\user.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\user.png",
       "SourceId": "Guide.Ui",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\",
       "BasePath": "_content/Guide.Ui",
       "RelativePath": "user.png",
       "AssetKind": "All",

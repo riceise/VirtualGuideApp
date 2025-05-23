@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\Guide.Ui.csproj": {}
+    "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\Guide.Ui.csproj": {}
   },
   "projects": {
-    "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\Guide.Api.csproj": {
+    "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\Guide.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\Guide.Api.csproj",
+        "projectUniqueName": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\Guide.Api.csproj",
         "projectName": "Guide.Api",
-        "projectPath": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\Guide.Api.csproj",
-        "packagesPath": "C:\\Users\\murad\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\obj\\",
+        "projectPath": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\Guide.Api.csproj",
+        "packagesPath": "C:\\Users\\Никита\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\murad\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Никита\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -26,8 +26,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Data\\Guide.Data.csproj": {
-                "projectPath": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Data\\Guide.Data.csproj"
+              "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Data\\Guide.Data.csproj": {
+                "projectPath": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Data\\Guide.Data.csproj"
               }
             }
           }
@@ -107,21 +107,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.405/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.402/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Data\\Guide.Data.csproj": {
+    "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Data\\Guide.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Data\\Guide.Data.csproj",
+        "projectUniqueName": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Data\\Guide.Data.csproj",
         "projectName": "Guide.Data",
-        "projectPath": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Data\\Guide.Data.csproj",
-        "packagesPath": "C:\\Users\\murad\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Data\\obj\\",
+        "projectPath": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Data\\Guide.Data.csproj",
+        "packagesPath": "C:\\Users\\Никита\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Data\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\murad\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Никита\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -202,21 +202,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.405/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.402/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\Guide.Ui.csproj": {
+    "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\Guide.Ui.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\Guide.Ui.csproj",
+        "projectUniqueName": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\Guide.Ui.csproj",
         "projectName": "Guide.Ui",
-        "projectPath": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\Guide.Ui.csproj",
-        "packagesPath": "C:\\Users\\murad\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\obj\\",
+        "projectPath": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\Guide.Ui.csproj",
+        "packagesPath": "C:\\Users\\Никита\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\murad\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Никита\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -228,11 +228,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\Guide.Api.csproj": {
-                "projectPath": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\Guide.Api.csproj"
+              "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\Guide.Api.csproj": {
+                "projectPath": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\Guide.Api.csproj"
               },
-              "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Data\\Guide.Data.csproj": {
-                "projectPath": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Data\\Guide.Data.csproj"
+              "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Data\\Guide.Data.csproj": {
+                "projectPath": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Data\\Guide.Data.csproj"
               }
             }
           }
@@ -288,7 +288,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.405/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.402/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

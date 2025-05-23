@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "Hash": "7WELaMbP6NAMrMOpQ40tZU++LOBhdRikHE95n3Op0a4=",
+  "Hash": "d8vJXfyWIDYdUBjMSqz5mjhWaQdf4cLrMOUi+ybcJXM=",
   "Source": "Guide.Api",
   "BasePath": "_content/Guide.Api",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Data\\Guide.Data.csproj",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Data\\Guide.Data.csproj",
       "Version": 2,
       "Source": "Guide.Data",
       "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
@@ -18,7 +18,7 @@
       "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Data\\Guide.Data.csproj",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Data\\Guide.Data.csproj",
       "Version": 2,
       "Source": "Guide.Data",
       "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
@@ -33,17 +33,17 @@
     {
       "Name": "Guide.Api\\wwwroot",
       "Source": "Guide.Api",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\",
       "BasePath": "_content/Guide.Api",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\130d6764-448e-4151-b0d9-924b5f3956e1.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\Uploads\\130d6764-448e-4151-b0d9-924b5f3956e1.png",
       "SourceId": "Guide.Api",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\",
       "BasePath": "_content/Guide.Api",
       "RelativePath": "Uploads/130d6764-448e-4151-b0d9-924b5f3956e1.png",
       "AssetKind": "All",
@@ -59,10 +59,10 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\130d6764-448e-4151-b0d9-924b5f3956e1.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\42ac7216-ae5d-45a0-81c8-7a5cb0801dae.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\Uploads\\42ac7216-ae5d-45a0-81c8-7a5cb0801dae.png",
       "SourceId": "Guide.Api",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\",
       "BasePath": "_content/Guide.Api",
       "RelativePath": "Uploads/42ac7216-ae5d-45a0-81c8-7a5cb0801dae.png",
       "AssetKind": "All",
@@ -78,10 +78,10 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\42ac7216-ae5d-45a0-81c8-7a5cb0801dae.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\4df43b63-da4e-4641-9489-06f1b92945fa.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\Uploads\\4df43b63-da4e-4641-9489-06f1b92945fa.png",
       "SourceId": "Guide.Api",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\",
       "BasePath": "_content/Guide.Api",
       "RelativePath": "Uploads/4df43b63-da4e-4641-9489-06f1b92945fa.png",
       "AssetKind": "All",
@@ -97,10 +97,10 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\4df43b63-da4e-4641-9489-06f1b92945fa.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\72f4b42f-fa99-4e12-af81-b3a4c87aa936.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\Uploads\\72f4b42f-fa99-4e12-af81-b3a4c87aa936.png",
       "SourceId": "Guide.Api",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\",
       "BasePath": "_content/Guide.Api",
       "RelativePath": "Uploads/72f4b42f-fa99-4e12-af81-b3a4c87aa936.png",
       "AssetKind": "All",
@@ -116,10 +116,10 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\72f4b42f-fa99-4e12-af81-b3a4c87aa936.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\b52e2c45-560d-45f3-8b38-ceee927f9453.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\Uploads\\b52e2c45-560d-45f3-8b38-ceee927f9453.png",
       "SourceId": "Guide.Api",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\",
       "BasePath": "_content/Guide.Api",
       "RelativePath": "Uploads/b52e2c45-560d-45f3-8b38-ceee927f9453.png",
       "AssetKind": "All",
@@ -135,10 +135,10 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\b52e2c45-560d-45f3-8b38-ceee927f9453.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\e95903a1-2ce7-4dbc-8746-8930ce1a0126.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\Uploads\\e95903a1-2ce7-4dbc-8746-8930ce1a0126.png",
       "SourceId": "Guide.Api",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\",
       "BasePath": "_content/Guide.Api",
       "RelativePath": "Uploads/e95903a1-2ce7-4dbc-8746-8930ce1a0126.png",
       "AssetKind": "All",
@@ -154,10 +154,10 @@
       "OriginalItemSpec": "wwwroot\\Uploads\\e95903a1-2ce7-4dbc-8746-8930ce1a0126.png"
     },
     {
-      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\ff1f874c-c0c8-426a-941f-5c783c65ec17.png",
+      "Identity": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\Uploads\\ff1f874c-c0c8-426a-941f-5c783c65ec17.png",
       "SourceId": "Guide.Api",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\wwwroot\\",
       "BasePath": "_content/Guide.Api",
       "RelativePath": "Uploads/ff1f874c-c0c8-426a-941f-5c783c65ec17.png",
       "AssetKind": "All",

@@ -8616,19 +8616,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\murad\\.nuget\\packages\\": {}
+    "C:\\Users\\Никита\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\Guide.Api.csproj",
+      "projectUniqueName": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\Guide.Api.csproj",
       "projectName": "Guide.Api",
-      "projectPath": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\Guide.Api.csproj",
-      "packagesPath": "C:\\Users\\murad\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\obj\\",
+      "projectPath": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\Guide.Api.csproj",
+      "packagesPath": "C:\\Users\\Никита\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\murad\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Никита\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -8640,8 +8640,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Data\\Guide.Data.csproj": {
-              "projectPath": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Data\\Guide.Data.csproj"
+            "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Data\\Guide.Data.csproj": {
+              "projectPath": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Data\\Guide.Data.csproj"
             }
           }
         }
@@ -8721,7 +8721,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.405/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.402/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

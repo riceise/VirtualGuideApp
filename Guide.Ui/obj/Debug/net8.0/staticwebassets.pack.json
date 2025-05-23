@@ -1,79 +1,79 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Guide.Ui.bundle.scp.css",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\Guide.Ui.bundle.scp.css",
       "PackagePath": "staticwebassets\\Guide.Ui.bundle.scp.css"
     },
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\app.css",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\app.css",
       "PackagePath": "staticwebassets\\app.css"
     },
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\bootstrap\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\bootstrap\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\favicon.png",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\favicon.png",
       "PackagePath": "staticwebassets\\favicon.png"
     },
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\js\\mapInterop.js",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\js\\mapInterop.js",
       "PackagePath": "staticwebassets\\js\\mapInterop.js"
     },
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\layers-2x.png",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\layers-2x.png",
       "PackagePath": "staticwebassets\\lib\\leaflet\\images\\layers-2x.png"
     },
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\layers.png",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\layers.png",
       "PackagePath": "staticwebassets\\lib\\leaflet\\images\\layers.png"
     },
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\marker-icon-2x.png",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\marker-icon-2x.png",
       "PackagePath": "staticwebassets\\lib\\leaflet\\images\\marker-icon-2x.png"
     },
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\marker-icon.png",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\marker-icon.png",
       "PackagePath": "staticwebassets\\lib\\leaflet\\images\\marker-icon.png"
     },
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\marker-shadow.png",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\images\\marker-shadow.png",
       "PackagePath": "staticwebassets\\lib\\leaflet\\images\\marker-shadow.png"
     },
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.esm.js",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.esm.js",
       "PackagePath": "staticwebassets\\lib\\leaflet\\leaflet-src.esm.js"
     },
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.esm.js.map",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.esm.js.map",
       "PackagePath": "staticwebassets\\lib\\leaflet\\leaflet-src.esm.js.map"
     },
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.js",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.js",
       "PackagePath": "staticwebassets\\lib\\leaflet\\leaflet-src.js"
     },
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.js.map",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet-src.js.map",
       "PackagePath": "staticwebassets\\lib\\leaflet\\leaflet-src.js.map"
     },
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet.css",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet.css",
       "PackagePath": "staticwebassets\\lib\\leaflet\\leaflet.css"
     },
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet.js",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet.js",
       "PackagePath": "staticwebassets\\lib\\leaflet\\leaflet.js"
     },
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet.js.map",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\lib\\leaflet\\leaflet.js.map",
       "PackagePath": "staticwebassets\\lib\\leaflet\\leaflet.js.map"
     },
     {
-      "Id": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Ui\\wwwroot\\user.png",
+      "Id": "C:\\Users\\Никита\\Desktop\\project_guide_app\\VirtualGuideApp\\Guide.Ui\\wwwroot\\user.png",
       "PackagePath": "staticwebassets\\user.png"
     },
     {
