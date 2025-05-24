@@ -19,11 +19,6 @@
         <CascadingAuthenticationState>
             <AuthorizeView>
                 <Authorized Context="outerAuthContext"> 
-                    <div class="nav-item px-3">
-                        <NavLink class="nav-link" href="map-example">
-                            <span class="bi bi-map-fill-nav-menu" aria-hidden="true"></span> Карта
-                        </NavLink>
-                    </div>
 
                     <AuthorizeView Roles="Excursionist,Administrator">
                         <Authorized Context="createTourAuthContext">

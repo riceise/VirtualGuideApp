@@ -10,6 +10,7 @@ public interface IAdminService
     Task<bool> UpdateTourStatusAsync(Guid tourId, TourStatus newStatus);
     Task<bool> DeleteTourAsync(Guid tourId);
     Task<(bool Success, IEnumerable<string> Errors)> DeleteUserAsync(Guid userId);
-    Task<List<AdminTourViewModel>> GetToursByCreatorAsync(Guid? creatorId); 
+    Task<List<AdminTourViewModel>> GetToursByCreatorAsync(Guid? creatorId);
     Task<UserDetailAdminDto> GetUserDetailsAsync(Guid userId);
+    Task<TourDetailsAdminDto?> GetTourDetailsAsync(Guid tourId);
 }

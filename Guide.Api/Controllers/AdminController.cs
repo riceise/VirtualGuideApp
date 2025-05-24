@@ -101,9 +101,17 @@ public class AdminController : ControllerBase
         return Ok(userDetails);
     }
     
+    [HttpGet("tours/{tourId}/full-details")]
+    public async Task<ActionResult<TourDetailsAdminDto>> GetTourDetails(Guid tourId)
+    {
+        var tour = await _adminService.GetTourDetailsAsync(tourId);
+        
+        if (tour == null)
+        {
+            return NotFound("Маршрут не найден");
+        }
 
-    
-
-    
-    
+        return Ok(tour);
+    }
+        
 }
