@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "7WELaMbP6NAMrMOpQ40tZU++LOBhdRikHE95n3Op0a4=",
+  "Hash": "w5qq1sQZNf85tWpflS6FLWrwC0tAoL076DnQKolPRUw=",
   "Source": "Guide.Api",
   "BasePath": "_content/Guide.Api",
   "Mode": "Default",
@@ -57,6 +57,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Uploads\\130d6764-448e-4151-b0d9-924b5f3956e1.png"
+    },
+    {
+      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\338ce83b-8c7a-447b-861e-b517eca827ca.png",
+      "SourceId": "Guide.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\",
+      "BasePath": "_content/Guide.Api",
+      "RelativePath": "Uploads/338ce83b-8c7a-447b-861e-b517eca827ca.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Uploads\\338ce83b-8c7a-447b-861e-b517eca827ca.png"
     },
     {
       "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\42ac7216-ae5d-45a0-81c8-7a5cb0801dae.png",
@@ -133,6 +152,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Uploads\\b52e2c45-560d-45f3-8b38-ceee927f9453.png"
+    },
+    {
+      "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\cbc3fcc4-f932-4edb-8005-4be641946116.png",
+      "SourceId": "Guide.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\",
+      "BasePath": "_content/Guide.Api",
+      "RelativePath": "Uploads/cbc3fcc4-f932-4edb-8005-4be641946116.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Uploads\\cbc3fcc4-f932-4edb-8005-4be641946116.png"
     },
     {
       "Identity": "C:\\Users\\murad\\RiderProjects\\Guide\\Guide.Api\\wwwroot\\Uploads\\e95903a1-2ce7-4dbc-8746-8930ce1a0126.png",

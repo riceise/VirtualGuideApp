@@ -1,0 +1,268 @@
+@page "/admin/tours/{TourId:guid}"
+@attribute [Authorize(Roles = "Administrator")]
+@inject IHttpClientFactory HttpClientFactory
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+
+<h3>Детали маршрута (Админ)</h3>
+
+@if (isLoading)
+{
+    <p><em>Загрузка деталей маршрута...</em></p>
+}
+else if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">@errorMessage</div>
+    <button class="btn btn-secondary mt-3" @onclick="GoBackToDashboard">Назад к Админ-панели</button>
+}
+else if (tourDetails != null)
+{
+    <div class="card shadow-sm mb-3">
+        <div class="card-header">
+            <h4 class="my-0 fw-normal">@tourDetails.Title</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Описание:</strong> @tourDetails.Description</p>
+            <p><strong>Автор:</strong> @(tourAuthorName ?? "Неизвестен")</p>
+            <p><strong>Тема:</strong> @(tourDetails.Theme ?? "Не указана")</p>
+            <p><strong>Статус:</strong> @GetTourStatusDisplayName(currentTourStatus)</p>
+            <p><strong>Дата создания:</strong> @tourDetails.CreatedAt.ToString("dd.MM.yyyy HH:mm")</p>
+            <p><strong>Последнее обновление:</strong> @tourDetails.UpdatedAt.ToString("dd.MM.yyyy HH:mm")</p>
+            
+            @if (tourDetails.EstimatedDistanceMeters.HasValue)
+            {
+                <p><strong>Примерное расстояние:</strong> @(Math.Round(tourDetails.EstimatedDistanceMeters.Value / 1000m, 2)) км</p>
+            }
+            @if (tourDetails.EstimatedDurationMinutes.HasValue)
+            {
+                <p><strong>Примерное время:</strong> @TimeSpan.FromSeconds(tourDetails.EstimatedDurationMinutes.Value).ToString(@"hh\:mm\:ss")</p>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(tourDetails.CoverImageUrl))
+            {
+                <p><strong>Обложка:</strong> <img src="@GetFullImageUrl(tourDetails.CoverImageUrl)" alt="Обложка тура" style="max-width: 200px; max-height: 200px;" /></p>
+            }
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <h5>Изменить статус:</h5>
+        <select class="form-select w-auto d-inline-block me-2" @bind="selectedStatusForUpdate">
+            @foreach (TourStatus status in Enum.GetValues(typeof(TourStatus)))
+            {
+                <option value="@status">@GetTourStatusDisplayName(status)</option>
+            }
+        </select>
+        <button class="btn btn-primary" @onclick="UpdateStatus" disabled="@(isUpdatingStatus || selectedStatusForUpdate == currentTourStatus)">
+            @if(isUpdatingStatus) { <span class="spinner-border spinner-border-sm"></span> } else { <span>Применить</span> }
+        </button>
+    </div>
+
+    <button class="btn btn-danger me-2" @onclick="ConfirmDelete" disabled="@isDeleting">
+        @if(isDeleting) { <span class="spinner-border spinner-border-sm"></span> } else { <span>Удалить маршрут</span> }
+    </button>
+
+    <a href="/tours/@TourId" target="_blank" class="btn btn-info">Просмотреть как пользователь</a>
+
+    @if (tourDetails.TourPoints != null && tourDetails.TourPoints.Any())
+    {
+        <h4 class="mt-4">Точки маршрута:</h4>
+        <ul class="list-group">
+            @foreach (var stop in tourDetails.TourPoints.OrderBy(s => s.Order))
+            {
+                <li class="list-group-item">
+                    <h6><strong>@stop.Order. @stop.Name</strong></h6>
+                    @if (!string.IsNullOrWhiteSpace(stop.TextDescription))
+                    {
+                        <p>@stop.TextDescription</p>
+                    }
+                    @if (stop.MediaContents != null && stop.MediaContents.Any())
+                    {
+                        <div>
+                            @foreach (var media in stop.MediaContents.OrderBy(m => m.Order))
+                            {
+                                <img src="@GetFullImageUrl(media.Url)" alt="@(media.Title ?? stop.Name)" style="max-width:80px; max-height:80px; margin:3px; border:1px solid #ddd;" />
+                            }
+                        </div>
+                    }
+                </li>
+            }
+        </ul>
+    }
+
+    @if (!string.IsNullOrEmpty(actionMessage))
+    {
+        <div class="alert @(isError ? "alert-danger" : "alert-success") mt-3">@actionMessage</div>
+    }
+
+    <button class="btn btn-secondary mt-3" @onclick="GoBackToDashboard">Назад к Админ-панели</button>
+}
+else
+{
+    <p>Маршрут не найден.</p>
+    <button class="btn btn-secondary mt-3" @onclick="GoBackToDashboard">Назад к Админ-панели</button>
+}
+
+@code {
+    [Parameter] public Guid TourId { get; set; }
+
+    private Tour? tourDetails;
+    private string? tourAuthorName;
+    private TourStatus currentTourStatus;
+    private TourStatus selectedStatusForUpdate;
+    private bool isLoading = true;
+    private bool isUpdatingStatus = false;
+    private bool isDeleting = false;
+    private string errorMessage = string.Empty;
+    private string actionMessage = string.Empty;
+    private bool isError = false;
+    private string? apiBaseUrl;
+    private HttpClient? _httpClient;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _httpClient = HttpClientFactory.CreateClient("BackendAPI");
+        apiBaseUrl = _httpClient.BaseAddress?.ToString().TrimEnd('/') ?? "http://localhost:5255";
+        await LoadTourDetails();
+    }
+
+    private async Task LoadTourDetails()
+    {
+        if (_httpClient == null) return;
+        isLoading = true;
+        errorMessage = string.Empty;
+        actionMessage = string.Empty;
+        isError = false;
+        
+        try
+        {
+            tourDetails = await _httpClient.GetFromJsonAsync<Tour>($"api/Admin/tours/{TourId}/full-details");
+
+            if (tourDetails != null)
+            {
+                currentTourStatus = tourDetails.Status;
+                selectedStatusForUpdate = tourDetails.Status;
+                tourAuthorName = tourDetails.CreatorUser?.FullName;
+            }
+            else
+            {
+                errorMessage = "Маршрут не найден.";
+            }
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            errorMessage = "Маршрут не найден.";
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Ошибка загрузки деталей маршрута: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task UpdateStatus()
+    {
+        if (tourDetails == null) return;
+        isUpdatingStatus = true;
+        actionMessage = string.Empty;
+        isError = false;
+        
+        try
+        {
+            var response = await _httpClient!.PutAsJsonAsync($"api/Admin/tours/{TourId}/status", new { Status = selectedStatusForUpdate });
+            if (response.IsSuccessStatusCode)
+            {
+                actionMessage = "Статус маршрута успешно обновлен.";
+                currentTourStatus = selectedStatusForUpdate;
+                tourDetails.Status = selectedStatusForUpdate;
+            }
+            else
+            {
+                actionMessage = "Не удалось обновить статус маршрута.";
+                isError = true;
+                selectedStatusForUpdate = currentTourStatus;
+            }
+        }
+        catch (Exception ex)
+        {
+            actionMessage = $"Критическая ошибка при обновлении статуса: {ex.Message}";
+            isError = true;
+            selectedStatusForUpdate = currentTourStatus;
+        }
+        finally
+        {
+            isUpdatingStatus = false;
+        }
+    }
+
+    private async Task ConfirmDelete()
+    {
+        if (tourDetails == null) return;
+        var confirmed = await JSRuntime.InvokeAsync<bool>("confirm", 
+            $"Вы уверены, что хотите удалить маршрут '{tourDetails.Title}'? Это действие необратимо.");
+        
+        if (confirmed)
+        {
+            isDeleting = true;
+            actionMessage = string.Empty;
+            isError = false;
+            
+            try
+            {
+                var response = await _httpClient!.DeleteAsync($"api/Admin/tours/{TourId}");
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    actionMessage = "Маршрут успешно удален.";
+                    Navigation.NavigateTo("/admin", forceLoad: true);
+                }
+                else
+                {
+                    actionMessage = "Не удалось удалить маршрут.";
+                    isError = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                actionMessage = $"Критическая ошибка при удалении: {ex.Message}";
+                isError = true;
+            }
+            finally
+            {
+                isDeleting = false;
+            }
+        }
+    }
+
+    private string GetFullImageUrl(string? relativeUrl)
+    {
+        if (string.IsNullOrWhiteSpace(relativeUrl)) return string.Empty;
+        if (relativeUrl.StartsWith("http://") || relativeUrl.StartsWith("https://") || relativeUrl.StartsWith("data:"))
+        {
+            return relativeUrl;
+        }
+        return $"{apiBaseUrl?.TrimEnd('/')}/{relativeUrl.TrimStart('/')}";
+    }
+
+    private string GetTourStatusDisplayName(TourStatus status)
+    {
+        return status switch
+        {
+            TourStatus.Draft => "Черновик",
+            TourStatus.PendingModeration => "На модерации",
+            TourStatus.Approved => "Одобрен",
+            TourStatus.Rejected => "Отклонен",
+            TourStatus.Archived => "В архиве",
+            _ => status.ToString()
+        };
+    }
+
+    private void GoBackToDashboard()
+    {
+        Navigation.NavigateTo("/admin");
+    }
+}

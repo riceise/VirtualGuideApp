@@ -1,13 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 
-
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">Guide</a>
     </div>
 </div>
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler"/>
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
@@ -18,25 +17,38 @@
         </div>
 
         <CascadingAuthenticationState>
-            <AuthorizeView Context="authState">
-                <Authorized>
+            <AuthorizeView>
+                <Authorized Context="outerAuthContext"> 
                     <div class="nav-item px-3">
                         <NavLink class="nav-link" href="map-example">
-                            <span class="bi bi-briefcase-fill-nav-menu" aria-hidden="true"></span> Карта
+                            <span class="bi bi-map-fill-nav-menu" aria-hidden="true"></span> Карта
                         </NavLink>
                     </div>
-                    <div class="nav-item px-3">
-                        <NavLink class="nav-link" href="create-tour">
-                            <span class="bi bi-briefcase-fill-nav-menu" aria-hidden="true"></span> Создать маршрут
-                        </NavLink>
-                    </div>
+
+                    <AuthorizeView Roles="Excursionist,Administrator">
+                        <Authorized Context="createTourAuthContext">
+                            <div class="nav-item px-3">
+                                <NavLink class="nav-link" href="create-tour">
+                                    <span class="bi bi-plus-circle-fill-nav-menu" aria-hidden="true"></span> Создать маршрут
+                                </NavLink>
+                            </div>
+                        </Authorized>
+                    </AuthorizeView>
+
+                    <AuthorizeView Roles="Administrator">
+                        <Authorized Context="adminPanelAuthContext">
+                            <div class="nav-item px-3">
+                                <NavLink class="nav-link" href="admin">
+                                    <span class="bi bi-shield-lock-fill-nav-menu" aria-hidden="true"></span> Админ-панель
+                                </NavLink>
+                            </div>
+                        </Authorized>
+                    </AuthorizeView>
                 </Authorized>
 
                 <NotAuthorized>
-
                 </NotAuthorized>
             </AuthorizeView>
         </CascadingAuthenticationState>
-
     </nav>
 </div>

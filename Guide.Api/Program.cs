@@ -9,6 +9,7 @@ using System.Text;
 using Guide.Controllers;
 using Guide.Data.Models;
 using Guide.Services;
+using Guide.Services.AdminServices;
 using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,7 @@ builder.Services.AddScoped<IDbConnection>(sp =>
     return new NpgsqlConnection(connectionString);
 });
 
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 builder.Services.AddIdentity<User, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<ApplicationDbContext>()

@@ -22,6 +22,10 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/murad/RiderProjects/Guide/Guide.Ui/Components/Pages/Admin.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBZG1pbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/murad/RiderProjects/Guide/Guide.Ui/Components/Pages/CreateTourPage.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDcmVhdGVUb3VyUGFnZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -44,6 +48,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/murad/RiderProjects/Guide/Guide.Ui/Components/Pages/TourDetailPage.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUb3VyRGV0YWlsUGFnZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/murad/RiderProjects/Guide/Guide.Ui/Components/Pages/TourDetailsAdmin.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xUb3VyRGV0YWlsc0FkbWluLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/murad/RiderProjects/Guide/Guide.Ui/Components/Pages/UserDetailsAdmin.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xVc2VyRGV0YWlsc0FkbWluLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/murad/RiderProjects/Guide/Guide.Ui/Components/Routes.razor]

@@ -1,0 +1,353 @@
+﻿@page "/admin"
+@attribute [Authorize(Roles = nameof(UserRole.Administrator))]
+@using Guide.Data.Models
+@using Guide.Data.Models.AdminModels
+@inject IHttpClientFactory HttpClientFactory
+@inject IJSRuntime JSRuntime
+@inject ILogger<Admin> Logger
+@inject NavigationManager NavigationManager
+<PageTitle>Админ-панель</PageTitle>
+<h1>Админ-панель</h1>
+
+@if (_isLoading)
+{
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Загрузка...</span>
+        </div>
+    </div>
+}
+else if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <div class="alert alert-danger">@_errorMessage</div>
+}
+else
+{
+    <div class="row">
+        @* --- Секция Туров --- *@
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h4 class="my-0 fw-normal">Туры (@_tours.Count)</h4>
+                </div>
+                <div class="card-body admin-list-body">
+                    @if (_tours.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var tour in _tours)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <a href="#" @onclick="() => ShowTourDetails(tour.TourId)" @onclick:preventDefault>
+                                            <strong>@tour.Title</strong>
+                                        </a>
+                                        <br/>
+                                        <small>Создатель: @tour.CreatorFullName | Статус: <span class="badge bg-secondary">@tour.Status</span> | Дата: @tour.CreatedAt.ToString("dd.MM.yyyy")</small>
+                                    </div>
+                                    <div>
+                                        @if (tour.Status == TourStatus.PendingModeration)
+                                        {
+                                            <button class="btn btn-sm btn-success me-2" @onclick="() => ApproveTour(tour.TourId)" disabled="@_isProcessing" title="Одобрить тур">
+                                                @if (_processingItemId == tour.TourId && _processingItemType == "ApproveTour" && _isProcessing)
+                                                {
+                                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                    <span class="visually-hidden">Одобрение...</span>
+                                                }
+                                                else
+                                                {
+                                                    <i class="bi bi-check-circle"></i>
+                                                }
+                                            </button>
+                                        }
+                                        <button class="btn btn-sm btn-outline-danger" @onclick="() => ConfirmDeleteTour(tour.TourId, tour.Title)" disabled="@_isProcessing">
+                                            @if (_processingItemId == tour.TourId && _processingItemType == "DeleteTour" && _isProcessing)
+                                            {
+                                                <span class="spinner-border spinner-border-sm"></span>
+                                            }
+                                            else
+                                            {
+                                                <i class="bi bi-trash"></i>
+                                            }
+                                        </button>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted">Нет туров для отображения.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        @* --- Секция Пользователей --- *@
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h4 class="my-0 fw-normal">Пользователи (@_users.Count)</h4>
+                </div>
+                <div class="card-body admin-list-body">
+                    @if (_users.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var user in _users)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <a href="#" @onclick="() => ShowUserDetails(user.UserId)" @onclick:preventDefault>
+                                            <strong>@user.FullName</strong>
+                                        </a> (@user.Email) - <span class="badge bg-secondary">@user.Role</span>
+                                        <br/>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-danger" @onclick="() => ConfirmDeleteUser(user.UserId, user.FullName)" disabled="@_isProcessing">
+                                        @if (_processingItemId == user.UserId && _processingItemType == "DeleteUser" && _isProcessing)
+                                        {
+                                            <span class="spinner-border spinner-border-sm"></span>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-trash"></i>
+                                        }
+                                    </button>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted">Нет пользователей для отображения.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .admin-list-body {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+</style>
+
+@code {
+    private HttpClient? _httpClient;
+    private bool _isLoading = true;
+    private string? _errorMessage;
+    private List<AdminTourViewModel> _tours = new();
+    private List<AdminUserViewModel> _users = new();
+    private bool _isProcessing = false;
+    private Guid? _processingItemId;
+    private string? _processingItemType;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _httpClient = HttpClientFactory.CreateClient("BackendAPI");
+        _isLoading = true;
+        _errorMessage = null;
+
+        try
+        {
+            var toursTask = LoadToursAsync();
+            var usersTask = LoadUsersAsync();
+            await Task.WhenAll(toursTask, usersTask);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Ошибка при загрузке данных для админ-панели");
+            _errorMessage = $"Не удалось загрузить данные: {ex.Message}";
+            _tours.Clear();
+            _users.Clear();
+        }
+        finally
+        {
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task LoadToursAsync()
+    {
+        if (_httpClient is null) return;
+        try
+        {
+            _tours = await _httpClient.GetFromJsonAsync<List<AdminTourViewModel>>("api/admin/tours") ?? new List<AdminTourViewModel>();
+            Logger.LogInformation("Загружено {Count} туров.", _tours.Count);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Ошибка загрузки туров");
+            _errorMessage = (_errorMessage ?? "") + " Ошибка загрузки туров. ";
+            _tours.Clear();
+        }
+    }
+
+    private async Task LoadUsersAsync()
+    {
+        if (_httpClient is null) return;
+        try
+        {
+            _users = await _httpClient.GetFromJsonAsync<List<AdminUserViewModel>>("api/admin/users") ?? new List<AdminUserViewModel>();
+            Logger.LogInformation("Загружено {Count} пользователей.", _users.Count);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Ошибка загрузки пользователей");
+            _errorMessage = (_errorMessage ?? "") + " Ошибка загрузки пользователей. ";
+            _users.Clear();
+        }
+    }
+
+    private async Task ApproveTour(Guid tourId)
+    {
+        if (_httpClient is null || _isProcessing) return;
+        _processingItemId = tourId;
+        _processingItemType = "ApproveTour";
+        _isProcessing = true;
+        StateHasChanged();
+
+        try
+        {
+            var response = await _httpClient.PutAsJsonAsync($"api/admin/tours/{tourId}/status", new { Status = TourStatus.Approved });
+            if (response.IsSuccessStatusCode)
+            {
+                Logger.LogInformation("Тур {TourId} одобрен.", tourId);
+                var tour = _tours.FirstOrDefault(t => t.TourId == tourId);
+                if (tour != null) tour.Status = TourStatus.Approved;
+                _errorMessage = null;
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Logger.LogWarning("Ошибка одобрения тура {TourId}. Статус: {StatusCode}. Ответ: {ErrorContent}", tourId, response.StatusCode, errorContent);
+                _errorMessage = $"Не удалось одобрить тур: {errorContent}";
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Критическая ошибка при одобрении тура {TourId}", tourId);
+            _errorMessage = $"Произошла ошибка при одобрении тура: {ex.Message}";
+        }
+        finally
+        {
+            ResetProcessingState();
+        }
+    }
+
+    private async Task ConfirmDeleteTour(Guid id, string title)
+    {
+        await ConfirmDeleteAsync("DeleteTour", id, $"тур '{title}'");
+    }
+
+    private async Task ConfirmDeleteUser(Guid id, string name)
+    {
+        await ConfirmDeleteAsync("DeleteUser", id, $"пользователя '{name}'");
+    }
+
+    private async Task ConfirmDeleteAsync(string itemType, Guid id, string itemDescription)
+    {
+        if (_httpClient is null || _isProcessing) return;
+
+        _processingItemId = id;
+        _processingItemType = itemType;
+        bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", $"Вы уверены, что хотите удалить {itemDescription}?");
+
+        if (confirmed)
+        {
+            _isProcessing = true;
+            StateHasChanged();
+
+            string apiUrl = itemType switch
+            {
+                "DeleteTour" => $"api/admin/tours/{id}",
+                "DeleteUser" => $"api/admin/users/{id}",
+                _ => string.Empty
+            };
+
+            if (string.IsNullOrEmpty(apiUrl))
+            {
+                Logger.LogError("Неизвестный тип элемента для удаления: {ItemType}", itemType);
+                _errorMessage = "Неизвестный тип элемента для удаления.";
+                ResetProcessingState();
+                return;
+            }
+
+            try
+            {
+                var response = await _httpClient.DeleteAsync(apiUrl);
+                if (response.IsSuccessStatusCode)
+                {
+                    Logger.LogInformation("{ItemType} {ItemId} успешно удален(а).", itemType, id);
+                    RemoveItemFromList(itemType, id);
+                    _errorMessage = null;
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Logger.LogWarning("Ошибка удаления {ItemType} {ItemId}. Статус: {StatusCode}. Ответ: {ErrorContent}", itemType, id, response.StatusCode, errorContent);
+                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        _errorMessage = $"Не удалось удалить {itemType.ToLower()}: элемент не найден.";
+                    }
+                    else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        _errorMessage = $"Не удалось удалить {itemType.ToLower()}: {errorContent}";
+                    }
+                    else
+                    {
+                        _errorMessage = $"Не удалось удалить {itemType.ToLower()}: {response.ReasonPhrase}.";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Критическая ошибка при удалении {ItemType} {ItemId}", itemType, id);
+                _errorMessage = $"Произошла ошибка при удалении: {ex.Message}";
+            }
+            finally
+            {
+                ResetProcessingState();
+            }
+        }
+        else
+        {
+            ResetProcessingState();
+        }
+    }
+
+    private void RemoveItemFromList(string itemType, Guid id)
+    {
+        switch (itemType)
+        {
+            case "DeleteTour":
+                _tours.RemoveAll(t => t.TourId == id);
+                break;
+            case "DeleteUser":
+                _users.RemoveAll(u => u.UserId == id);
+                break;
+        }
+
+        StateHasChanged();
+    }
+
+    private void ResetProcessingState()
+    {
+        _isProcessing = false;
+        _processingItemId = null;
+        _processingItemType = null;
+        StateHasChanged();
+    }
+
+    private void ShowTourDetails(Guid id)
+    {
+        NavigationManager.NavigateTo($"/admin/tour-details/{id}");
+    }
+
+    private void ShowUserDetails(Guid id)
+    {
+        NavigationManager.NavigateTo($"/admin/user-details/{id}");
+    }
+
+}
