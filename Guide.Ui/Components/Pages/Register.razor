@@ -89,9 +89,18 @@
     .api-error-list li { margin-bottom: 5px; }
     .form-check-label {
         margin-bottom: 0;
-        vertical-align: middle;
+        user-select: none;
     }
     .register-form > div:last-child { margin-top: 0; }
+    .form-group.form-check {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+    }
+    .form-check-input {
+        margin-right: 0.5rem;
+        width: auto !important;
+    }
 </style>
 
 <div class="register-form">
