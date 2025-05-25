@@ -1,0 +1,228 @@
+@page "/profile"
+@attribute [Authorize]
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IHttpClientFactory HttpClientFactory
+@inject ILogger<Profile> Logger
+@using System.Security.Claims
+@using Guide.Data.Models.Users
+
+<PageTitle>Профиль пользователя</PageTitle>
+
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            <img src="user.png" alt="Аватар пользователя" />
+        </div>
+        <div class="profile-info">
+            <h2>@userInfo?.FullName</h2>
+            <p class="text-muted">@userInfo?.Email</p>
+            <div class="profile-role">
+                <span class="badge bg-primary">@userInfo?.Role</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-details">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Информация о пользователе</h5>
+                <div class="profile-info-item">
+                    <span class="info-label">Имя пользователя:</span>
+                    <span class="info-value">@userInfo?.UserName</span>
+                </div>
+            </div>
+        </div>
+
+        @if (userTours != null && userTours.Any())
+        {
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Мои маршруты</h5>
+                    <div class="tour-list">
+                        @foreach (var tour in userTours)
+                        {
+                            <div class="tour-item">
+                                <h6>@tour.Title</h6>
+                                <p class="text-muted small mb-1">Статус: <span class="badge bg-secondary">@tour.Status</span></p>
+                                <p class="text-muted small">Создан: @tour.CreatedAt.ToString("dd.MM.yyyy")</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .profile-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .profile-avatar {
+        flex-shrink: 0;
+    }
+
+    .profile-avatar img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #fff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .profile-info {
+        flex-grow: 1;
+    }
+
+    .profile-info h2 {
+        margin: 0;
+        color: #2c3e50;
+        font-size: 1.8rem;
+    }
+
+    .profile-role {
+        margin-top: 0.5rem;
+    }
+
+    .profile-details .card {
+        margin-bottom: 1rem;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .profile-info-item {
+        margin: 1rem 0;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .info-label {
+        font-weight: 500;
+        color: #6c757d;
+        margin-right: 0.5rem;
+    }
+
+    .info-value {
+        color: #2c3e50;
+    }
+
+    .tour-list {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .tour-item {
+        padding: 1rem;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        transition: transform 0.2s;
+    }
+
+    .tour-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .tour-item h6 {
+        margin: 0;
+        color: #2c3e50;
+    }
+
+    @@media (max-width: 576px) {
+        .profile-header {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .profile-info {
+            width: 100%;
+        }
+    }
+</style>
+
+@code {
+    private UserProfileViewModel? userInfo;
+    private List<UserTourViewModel>? userTours;
+    private HttpClient? httpClient;
+
+    protected override async Task OnInitializedAsync()
+    {
+        httpClient = HttpClientFactory.CreateClient("BackendAPI");
+        await LoadUserProfile();
+    }
+
+    private async Task LoadUserProfile()
+    {
+        try
+        {
+            if (httpClient == null) return;
+
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity?.IsAuthenticated == true)
+            {
+                var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (!string.IsNullOrEmpty(userId) && Guid.TryParse(userId, out var userGuid))
+                {
+                    var userDetails = await httpClient.GetFromJsonAsync<UserDetailAdminDto>($"api/Admin/users/{userGuid}/full-details");
+                    if (userDetails != null)
+                    {
+                        userInfo = new UserProfileViewModel
+                        {
+                            UserName = userDetails.UserName,
+                            Email = userDetails.Email,
+                            FullName = userDetails.FullName,
+                            Role = userDetails.Role.ToString(),
+                            CreatedAt = userDetails.CreatedAt
+                        };
+                        userTours = userDetails.CreatedTours.Select(t => new UserTourViewModel
+                        {
+                            TourId = t.TourId,
+                            Title = t.Title,
+                            Status = t.Status.ToString(),
+                            CreatedAt = t.CreatedAt
+                        }).ToList();
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Ошибка при загрузке профиля пользователя");
+        }
+    }
+
+    public class UserProfileViewModel
+    {
+        public string UserName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string FullName { get; set; } = string.Empty;
+        public string Role { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; }
+    }
+
+    public class UserTourViewModel
+    {
+        public Guid TourId { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; }
+    }
+}

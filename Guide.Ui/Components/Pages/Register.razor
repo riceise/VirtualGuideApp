@@ -92,6 +92,41 @@
         vertical-align: middle;
     }
     .register-form > div:last-child { margin-top: 0; }
+
+    .form-check {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .form-check-input {
+        margin-right: 0.5rem;
+        cursor: pointer;
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    .form-check-label {
+        cursor: pointer;
+        user-select: none;
+        padding-top: 10px;
+    }
+
+    .login-link {
+        text-align: center;
+        margin-top: 15px;
+        padding-top: 10px;
+    }
+
+    .login-link a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .login-link a:hover {
+        text-decoration: underline;
+    }
+
 </style>
 
 <div class="register-form">
@@ -155,6 +190,10 @@
             }
         </button>
     </EditForm>
+
+    <div class="login-link">
+        Есть аккаунт? <a href="/login">Войти</a>
+    </div>
 </div>
 
 @code
