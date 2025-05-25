@@ -1,0 +1,77 @@
+## 👉 Системные каталоги сборки
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+
+## 👉 Файлы промежуточной сборки и кэширования
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.dbmdl
+*.aps
+*.vspscc
+*.vssscc
+
+## 👉 Rider
+.idea/
+*.sln.iml
+
+## 👉 VS Code
+.vscode/
+.vscode/*
+
+## 👉 Visual Studio
+.vs/
+Generated_Code/
+TestResults/
+
+## 👉 Конфигурации сборки
+*.Build.Caches
+*.builds
+
+## 👉 Файлы публикации и деплоя
+publish/
+wwwroot/dist/
+dist/
+
+## 👉 Локальные базы данных
+*.mdf
+*.ldf
+
+## 👉 Конфигурации системы и окружения
+.env
+*.env.*
+
+## 👉 Node.js, если используется
+node_modules/
+npm-debug.log
+yarn.lock
+package-lock.json
+
+## 👉 Фронтенд-сборки (если Blazor WebAssembly или подключён Tailwind)
+wwwroot/css/
+wwwroot/js/
+*.map
+
+## 👉 Образцы и временные файлы
+*.tmp
+*.bak
+*.old
+*.orig
+
+## 👉 MacOS/Linux/Windows мусор
+.DS_Store
+Thumbs.db
+desktop.ini
+
+## 👉 Файлы, создаваемые архиваторами
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
