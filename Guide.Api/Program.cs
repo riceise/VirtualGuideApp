@@ -11,6 +11,7 @@ using Guide.Data.Models;
 using Guide.Services;
 using Guide.Services.AdminServices;
 using Npgsql;
+using Guide.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,8 @@ builder.Services.AddScoped<IDbConnection>(sp =>
 });
 
 builder.Services.AddScoped<IAdminService, AdminService>();
+// В методе ConfigureServices:
+builder.Services.AddScoped<ICommentsService, CommentService>();
 
 builder.Services.AddIdentity<User, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<ApplicationDbContext>()

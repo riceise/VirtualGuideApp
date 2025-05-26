@@ -142,3 +142,53 @@ window.disposeLeafletMap = () => {
         console.warn("Error disposing Leaflet map:", error);
     }
 };
+
+let userLocationMarker = null;
+
+window.getCurrentLocation = async () => {
+    return new Promise((resolve, reject) => {
+        if (!mapInstance) {
+            reject('Карта не инициализирована');
+            return;
+        }
+        
+        if (!navigator.geolocation) {
+            reject('Геолокация не поддерживается вашим браузером');
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const location = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                resolve(location);
+            },
+            (error) => {
+                reject('Ошибка получения местоположения: ' + error.message);
+            }
+        );
+    });
+};
+
+window.showUserLocation = (lat, lng) => {
+    if (!mapInstance) {
+        throw new Error('Карта не инициализирована');
+    }
+
+    if (userLocationMarker) {
+        mapInstance.removeLayer(userLocationMarker);
+    }
+
+    const userIcon = L.divIcon({
+        html: '<div style="background-color: #2196F3; width: 15px; height: 15px; border-radius: 50%; border: 2px solid white;"></div>',
+        className: 'user-location-marker'
+    });
+
+    userLocationMarker = L.marker([lat, lng], { icon: userIcon }).addTo(mapInstance);
+    userLocationMarker.bindPopup('Вы здесь').openPopup();
+
+    // Центрируем карту на местоположении пользователя
+    mapInstance.setView([lat, lng], mapInstance.getZoom());
+};

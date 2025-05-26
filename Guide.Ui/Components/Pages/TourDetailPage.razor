@@ -4,6 +4,8 @@
 @inject IHttpClientFactory HttpClientFactory
 @inject ILogger<TourDetailPage> Logger
 @implements IAsyncDisposable
+@inject AuthenticationStateProvider AuthStateProvider
+@using Microsoft.AspNetCore.Components.Authorization
 
 @if (isLoading)
 {
@@ -31,6 +33,24 @@ else if (tourDetails != null)
 
     <div style="position: relative; height: 500px; width: 100%; border: 1px solid #ccc;">
         <div id="@mapContainerId" style="height: 100%; width: 100%;"></div>
+        
+        <button class="btn btn-primary position-absolute" 
+                style="bottom: 10px; right: 10px; z-index: 1000;"
+                @onclick="ShowCurrentLocation">
+            @if (isLoadingLocation)
+            {
+                <span class="spinner-border spinner-border-sm mr-1"></span>
+            }
+            <i class="fas fa-location-arrow"></i> Моё местоположение
+        </button>
+
+        @if (!string.IsNullOrEmpty(locationError))
+        {
+            <div class="alert alert-danger position-absolute" 
+                 style="bottom: 60px; right: 10px; z-index: 1000;">
+                @locationError
+            </div>
+        }
 
         @if (isMapInitializing)
         {
@@ -72,6 +92,163 @@ else if (tourDetails != null)
             }
         </ul>
     }
+
+    <div class="comments-section mt-4">
+        <h4>Комментарии</h4>
+        
+        @if (isAuthenticated)
+        {
+            <div class="add-comment mb-3">
+                <div class="rating mb-2">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        var rating = i;
+                        <span class="star @(rating <= selectedRating ? "selected" : "")" 
+                            @onclick="() => SelectRating(rating)">
+                            ★
+                        </span>
+                    }
+                </div>
+                <div class="form-group">
+                    <textarea 
+                        class="form-control" 
+                        @bind="newCommentText" 
+                        placeholder="Оставьте свой комментарий..."
+                        rows="3">
+                    </textarea>
+                </div>
+                <button 
+                    class="btn btn-primary mt-2" 
+                    @onclick="AddComment" 
+                    disabled="@(string.IsNullOrWhiteSpace(newCommentText) || isAddingComment)">
+                    @if (isAddingComment)
+                    {
+                        <span class="spinner-border spinner-border-sm"></span>
+                        <span> Отправка...</span>
+                    }
+                    else
+                    {
+                        <span>Отправить</span>
+                    }
+                </button>
+            </div>
+        }
+
+        @if (comments == null)
+        {
+            <p><em>Загрузка комментариев...</em></p>
+        }
+        else if (!comments.Any())
+        {
+            <p>Пока нет комментариев. Будьте первым!</p>
+        }
+        else
+        {
+            <div class="comments-list">
+                @foreach (var comment in comments.OrderByDescending(c => c.CreatedAt))
+                {
+                    <div class="comment-item">
+                        <div class="comment-header">
+                            <strong>@comment.UserName</strong>
+                            <small class="text-muted">@comment.CreatedAt.ToString("dd.MM.yyyy HH:mm")</small>
+                        </div>
+                        <div class="rating-display">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                <span class="star @(i <= comment.Rating ? "selected" : "")">★</span>
+                            }
+                        </div>
+                        <div class="comment-body">
+                            @comment.Text
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <style>
+        .comments-section {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .comment-item {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-body {
+            white-space: pre-wrap;
+        }
+        .user-location-marker {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .user-location-marker div {
+            box-shadow: 0 0 10px rgba(33, 150, 243, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @@keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .rating {
+            font-size: 24px;
+            color: #ddd;
+        }
+
+        .star {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .star:hover,
+        .star.selected {
+            color: #ffd700;
+        }
+
+        .rating-display {
+            font-size: 18px;
+        }
+
+        .rating-display .star {
+            cursor: default;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+            
+    </style>
 }
 else
 {
@@ -95,6 +272,14 @@ else
 
     private bool _mapInitializationAttempted = false; 
 
+    private List<CommentViewModel> comments;
+    private string newCommentText = string.Empty;
+    private bool isAddingComment = false;
+    private bool isAuthenticated = false;
+
+    private bool isLoadingLocation = false;
+    private string locationError = string.Empty;
+
     protected override async Task OnInitializedAsync()
     {
         httpClient = HttpClientFactory.CreateClient("BackendAPI");
@@ -104,7 +289,11 @@ else
         dotNetObjectReference = DotNetObjectReference.Create(this);
         mapInitCts = new CancellationTokenSource(TimeSpan.FromSeconds(15)); 
 
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        isAuthenticated = authState.User.Identity?.IsAuthenticated ?? false;
+        
         await LoadTourDetails();
+        await LoadComments();
     }
 
     private async Task LoadTourDetails()
@@ -148,6 +337,56 @@ else
         {
             isLoading = false;
             await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async Task LoadComments()
+    {
+        try
+        {
+            comments = await httpClient.GetFromJsonAsync<List<CommentViewModel>>($"api/Comments/Tours/{TourId}");
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Ошибка при загрузке комментариев");
+        }
+    }
+
+    private int selectedRating = 0;
+
+    private void SelectRating(int rating)
+    {
+        selectedRating = rating;
+    }
+
+    private async Task AddComment()
+    {
+        if (string.IsNullOrWhiteSpace(newCommentText) || selectedRating == 0) return;
+        
+        isAddingComment = true;
+        try
+        {
+            var comment = new AddCommentRequest
+            {
+                Text = newCommentText,
+                Rating = selectedRating
+            };
+
+            var response = await httpClient.PostAsJsonAsync($"api/Comments/Tours/{TourId}", comment);
+            if (response.IsSuccessStatusCode)
+            {
+                newCommentText = string.Empty;
+                selectedRating = 0;
+                await LoadComments();
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Ошибка при добавлении комментария");
+        }
+        finally
+        {
+            isAddingComment = false;
         }
     }
 
@@ -313,4 +552,54 @@ else
         }
     }
 
+    public class CommentViewModel
+    {
+        public Guid CommentId { get; set; }
+        public string UserName { get; set; } = string.Empty;
+        public string Text { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; }
+        public int Rating { get; set; }
+    }
+
+    private async Task ShowCurrentLocation()
+    {
+        if (!isMapReady)
+        {
+            locationError = "Дождитесь загрузки карты";
+            return;
+        }
+
+        try
+        {
+            isLoadingLocation = true;
+            locationError = string.Empty;
+            StateHasChanged();
+            
+            var location = await JSRuntime.InvokeAsync<LocationData>("getCurrentLocation");
+            await JSRuntime.InvokeVoidAsync("showUserLocation", location.Lat, location.Lng);
+        }
+        catch (JSException ex)
+        {
+            locationError = "Ошибка карты: " + ex.Message;
+            Logger.LogError(ex, "JavaScript ошибка при получении местоположения");
+        }
+        catch (Exception ex)
+        {
+            locationError = "Не удалось получить местоположение";
+            Logger.LogError(ex, "Ошибка при получении местоположения");
+        }
+        finally
+        {
+            isLoadingLocation = false;
+            StateHasChanged();
+        }
+    }
+
+    private class LocationData
+    {
+        public double Lat { get; set; }
+        public double Lng { get; set; }
+    }
+
+    
 }

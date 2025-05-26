@@ -16,6 +16,8 @@ public class Tour
     [Key]
     public Guid TourId { get; set; } = Guid.NewGuid();
 
+    public virtual ICollection<TourComment> Comments { get; set; } = new List<TourComment>();
+
     [Required]
     public Guid CreatorUserId { get; set; }
     [ForeignKey("CreatorUserId")]
