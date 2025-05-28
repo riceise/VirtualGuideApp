@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Guide.Data.Models;
 using Guide.Api.Services;
 using Guide.Data.Models.TourDTOs;
 using System.Security.Claims;
@@ -39,12 +34,12 @@ public class CommentsController : ControllerBase
                 return Unauthorized();
 
             var comment = await _commentsService.AddCommentAsync(
-                tourId, 
-                Guid.Parse(userId), 
+                tourId,
+                Guid.Parse(userId),
                 request.Text,
                 request.Rating
             );
-            
+
             return CreatedAtAction(nameof(GetTourComments), new { tourId }, comment);
         }
         catch (Exception ex)
@@ -91,4 +86,32 @@ public class CommentsController : ControllerBase
             return StatusCode(500, "Внутренняя ошибка сервера");
         }
     }
+    
+    [HttpGet("tours/{tourId}/rating")]
+    public async Task<ActionResult<TourRatingDto>> GetTourRating(Guid tourId)
+    {
+        try
+        {
+            var comments = await _commentsService.GetTourCommentsAsync(tourId);
+            if (!comments.Any())
+            {
+                return Ok(new TourRatingDto { AverageRating = 0, TotalRatings = 0 });
+            }
+
+            var averageRating = comments.Average(c => c.Rating);
+            var totalRatings = comments.Count();
+
+            return Ok(new TourRatingDto
+            {
+                AverageRating = Math.Round(averageRating, 1),
+                TotalRatings = totalRatings
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка при получении рейтинга для тура {TourId}", tourId);
+            return StatusCode(500, "Внутренняя ошибка сервера");
+        }
+    }
+
 }

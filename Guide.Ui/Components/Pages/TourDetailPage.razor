@@ -6,6 +6,7 @@
 @implements IAsyncDisposable
 @inject AuthenticationStateProvider AuthStateProvider
 @using Microsoft.AspNetCore.Components.Authorization
+@using Guide.Data.Models.TourDTOs
 
 @if (isLoading)
 {
@@ -30,6 +31,25 @@ else if (tourDetails != null)
     {
         <p>Примерное время: @TimeSpan.FromSeconds(tourDetails.TotalDurationSeconds.Value).ToString(@"hh\:mm\:ss")</p>
     }
+
+    <div class="tour-rating mb-3">
+        <div class="rating-display">
+            @for (int i = 1; i <= 5; i++)
+            {
+                <span class="star @(i <= Math.Round(tourRating?.AverageRating ?? 0) ? "selected" : "")">★</span>
+            }
+        </div>
+        <span class="rating-text">
+            @if (tourRating?.TotalRatings > 0)
+            {
+                @($"{tourRating.AverageRating:F1} из 5 ({tourRating.TotalRatings} {GetRatingWord(tourRating.TotalRatings)})")
+            }
+            else
+            {
+                @("Нет оценок")
+            }
+        </span>
+    </div>
 
     <div style="position: relative; height: 500px; width: 100%; border: 1px solid #ccc;">
         <div id="@mapContainerId" style="height: 100%; width: 100%;"></div>
@@ -168,6 +188,22 @@ else if (tourDetails != null)
     </div>
 
     <style>
+        .tour-rating {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .rating-text {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .rating-display {
+            color: #ffd700;
+            font-size: 1.5rem;
+        }
+
         .comments-section {
             margin-top: 2rem;
             padding: 1rem;
@@ -260,6 +296,7 @@ else
 
     private Guide.Api.Controllers.ToursController.TourDetailsResponse tourDetails;
     private bool isLoading = true;
+    private TourRatingDto tourRating;
     private bool isLoadingError = false;
     private bool isMapReady = false;
     private bool isMapInitializing = false; 
@@ -269,9 +306,7 @@ else
     private DotNetObjectReference<TourDetailPage> dotNetObjectReference;
     private string mapContainerId = "tour-detail-map"; 
     private CancellationTokenSource mapInitCts;
-
     private bool _mapInitializationAttempted = false; 
-
     private List<CommentViewModel> comments;
     private string newCommentText = string.Empty;
     private bool isAddingComment = false;
@@ -294,6 +329,35 @@ else
         
         await LoadTourDetails();
         await LoadComments();
+        await LoadTourRating();
+    }
+
+    private async Task LoadTourRating()
+    {
+        try
+        {
+            tourRating = await httpClient.GetFromJsonAsync<TourRatingDto>($"api/Comments/Tours/{TourId}/rating");
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Ошибка при загрузке рейтинга");
+        }
+    }
+
+    private string GetRatingWord(int count)
+    {
+        var lastDigit = count % 10;
+        var lastTwoDigits = count % 100;
+
+        if (lastTwoDigits >= 11 && lastTwoDigits <= 19)
+            return "оценок";
+
+        return lastDigit switch
+        {
+            1 => "оценка",
+            2 or 3 or 4 => "оценки",
+            _ => "оценок"
+        };
     }
 
     private async Task LoadTourDetails()
